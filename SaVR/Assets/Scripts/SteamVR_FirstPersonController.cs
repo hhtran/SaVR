@@ -37,10 +37,13 @@ public class SteamVR_FirstPersonController : MonoBehaviour
     private GameObject canGrabObject;
     private Color[] canGrabObjectOriginalColors;
     private GameObject previousGrabbedObject;
+    private LayerMask previousGrabbedObjectLayer;
 
     private Transform HeadsetCameraRig;
     private float HeadsetCameraRigInitialYPosition;
     private Vector3 TeleportLocation;
+
+
 
     void Awake()
     {
@@ -205,6 +208,7 @@ public class SteamVR_FirstPersonController : MonoBehaviour
     Rigidbody ReleaseGrabbedObjectFromController()
     {
         var jointGameObject = controllerAttachJoint.gameObject;
+        jointGameObject.layer = LayerMask.NameToLayer("Money");
         var rigidbody = jointGameObject.GetComponent<Rigidbody>();
         Object.DestroyImmediate(controllerAttachJoint);
         controllerAttachJoint = null;
@@ -249,6 +253,7 @@ public class SteamVR_FirstPersonController : MonoBehaviour
             if (controllerAttachJoint == null && device.GetTouchDown(SteamVR_Controller.ButtonMask.Trigger))
             {
                 previousGrabbedObject = canGrabObject;
+                previousGrabbedObject.layer = LayerMask.NameToLayer("Default");
                 SnapCanGrabObjectToController(canGrabObject);
             }
             else if (controllerAttachJoint != null && device.GetTouchUp(SteamVR_Controller.ButtonMask.Trigger))

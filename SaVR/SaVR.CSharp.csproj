@@ -75,7 +75,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\PlayerPassthrough.cs" />
     <Compile Include="Assets\Scripts\SteamVR_FirstPersonController.cs" />
     <Compile Include="Assets\Scripts\WandController.cs" />
     <Compile Include="Assets\SteamVR\Extras\SteamVR_GazeTracker.cs" />
