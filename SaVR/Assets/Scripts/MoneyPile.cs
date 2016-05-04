@@ -6,8 +6,10 @@ public class MoneyPile : MonoBehaviour {
 	public int batchSize = 100;
 	public int batchDelay = 10; //In milliseconds
 	public int barsToCreate = 100;
-	// Use this for initialization
-	void Start () {
+
+    private ArrayList goldBars;
+    // Use this for initialization
+    void Start () {
 	
 	}
 
@@ -15,15 +17,36 @@ public class MoneyPile : MonoBehaviour {
 		int barsCreated = 0;
 		Debug.Log ("Creating bars");
 
+        goldBars = new ArrayList();
+
+
 		while (barsCreated < barsToCreate){
 			Vector3 spawnLocation = new Vector3 (transform.position.x, transform.position.y + barsCreated, transform.position.z);
-			Instantiate(goldBarPrefab, spawnLocation, Quaternion.identity);
+			GameObject goldBar = (GameObject)Instantiate(goldBarPrefab, spawnLocation, Quaternion.identity);
+            goldBars.Add(goldBar);
 			barsCreated++;
 		}
+
+        StartCoroutine("waitThenTurnOffPhysics");
+
+
 	}
 
-	// Update is called once per frame
-	void Update () {
+    IEnumerator waitThenTurnOffPhysics()
+    {
+        //Do whatever you need done here before waiting
+
+        yield return new WaitForSeconds(3f);
+
+        foreach (GameObject g in goldBars)
+        {
+            Rigidbody rb = g.GetComponent<Rigidbody>();
+            rb.isKinematic = true;
+        }
+    }
+
+    // Update is called once per frame
+    void Update () {
 		if (Input.GetKeyDown(KeyCode.X)){
 			createBars(barsToCreate);
 		}

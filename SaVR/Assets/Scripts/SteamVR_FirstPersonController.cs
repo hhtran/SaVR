@@ -198,15 +198,18 @@ public class SteamVR_FirstPersonController : MonoBehaviour
 
     void SnapCanGrabObjectToController(GameObject obj)
     {
+        Debug.Log("Grabbing object");
         obj.transform.position = controllerAttachPoint.transform.position;
-
+        Debug.Log(obj.gameObject.name);
         controllerAttachJoint = obj.AddComponent<FixedJoint>();
+        
         controllerAttachJoint.connectedBody = controllerAttachPoint;
         ToggleGrabbableObjectHighlight(false);
     }
 
     Rigidbody ReleaseGrabbedObjectFromController()
     {
+        Debug.Log("Releasing object");
         var jointGameObject = controllerAttachJoint.gameObject;
         jointGameObject.layer = LayerMask.NameToLayer("Money");
         var rigidbody = jointGameObject.GetComponent<Rigidbody>();
@@ -250,6 +253,9 @@ public class SteamVR_FirstPersonController : MonoBehaviour
     {
         if (canGrabObject != null)
         {
+
+            Debug.Log(controllerAttachJoint);
+
             if (controllerAttachJoint == null && device.GetTouchDown(SteamVR_Controller.ButtonMask.Trigger))
             {
                 previousGrabbedObject = canGrabObject;
