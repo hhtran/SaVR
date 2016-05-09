@@ -9,8 +9,13 @@ namespace AssemblyCSharp
 	{
 		private String categoryName;
 		private String prefabFolder = "Prefabs/";
+
+		// Data stored
 		private float moneyStored;
 		private float goalAmount;
+		private bool firstCompletionOfGoal = true;
+
+		// Root and parent grouping objects
 		private GameObject categoryRootObj; //The empty game object that serves as the root to hold all categories
 		private GameObject categoryParentObj; //The root game object to hold game objects related to this category
 		private Dictionary<int, List<GameObject>> moneySubObjects = new Dictionary<int, List<GameObject>>(); //A dictionary mapping from a place value (e.g. 100) to an array of the child money GameObjects that are of that placevalue
@@ -29,6 +34,15 @@ namespace AssemblyCSharp
 
 			createWorldObjects (startingAmount, categoriesRootObj, position, rotation);
 			createCategoryLabels (startingAmount, goalAmount);
+		}
+
+		private void checkForGoalCompletion(){
+			if (moneyStored >= goalAmount && firstCompletionOfGoal) {
+				GameObject completionAnimation = Instantiate (Resources.Load (prefabFolder + "Goal Complete", typeof(GameObject))) as GameObject;
+				completionAnimation.transform.position = categoryParentObj.transform.position + new Vector3(0, 5, 0);
+				firstCompletionOfGoal = false;
+				Debug.Log ("Completed goal");
+			}
 		}
 
 		private void createCategoryLabels(float startingAmount, float goalAmount){
@@ -56,17 +70,17 @@ namespace AssemblyCSharp
 		}
 
 		private void createAmountTextLabel(float startingAmount){
-			amountTextLabel = createTextLabel (new Vector3(-3, 1, 0), Quaternion.identity);
+			amountTextLabel = createTextLabel (new Vector3(-3, 1, -1), Quaternion.identity);
 			setTextForTextLabel(amountTextLabel, "Amount stored: " + startingAmount.ToString());
 		}
 
 		private void createGoalTextLabel(float goalAmount){
-			goalTextLabel = createTextLabel (new Vector3(-3, 3, 0), Quaternion.identity);
+			goalTextLabel = createTextLabel (new Vector3(-3, 3, -1), Quaternion.identity);
 			setTextForTextLabel (goalTextLabel, "Goal: " + goalAmount.ToString ());
 		}
 
 		private void createCategoryTextLabel(){
-			categoryNameTextLabel = createTextLabel (new Vector3(-3, 5, 0), Quaternion.identity);
+			categoryNameTextLabel = createTextLabel (new Vector3(-3, 5, -1), Quaternion.identity);
 			setTextForTextLabel (categoryNameTextLabel, categoryName);
 		}
 
@@ -104,7 +118,6 @@ namespace AssemblyCSharp
 				List<GameObject> placeValueObjectList = createPlaceValueObjects(placeValue, digitValue, categoryParentObj);
 				placeValuesMap.Add (placeValue, placeValueObjectList);
 
-				Debug.Log ("Amount to convert: " + amountToConvert.ToString());
 				//Increment
 				placeValue *= 10;
 			}
@@ -113,7 +126,6 @@ namespace AssemblyCSharp
 
 		// Returns a list of in-world game objects for a given number of objects, under the category parent object
 		private List<GameObject> createPlaceValueObjects(int placeValue, float numberOfObjs, GameObject categoryParentObject){
-			Debug.Log ("Creating place value objects: " + placeValue.ToString() + " place value: " + numberOfObjs.ToString());
 			List<GameObject> placeValueObjectList = new List<GameObject> ();
 			GameObject prefabForPlaceValue = getPrefabForPlaceValue (placeValue);
 
@@ -164,6 +176,7 @@ namespace AssemblyCSharp
 
 			moneyStored += amount;
 			updateAmountLabel ();
+			checkForGoalCompletion ();
 		}
 
 		public void removeMoney(float amount) {
@@ -174,6 +187,7 @@ namespace AssemblyCSharp
 		public void changeGoalAmount (float newGoalAmount) {
 			goalAmount = newGoalAmount;
 			updateGoalLabel ();
+			checkForGoalCompletion ();
 		}
 
 		private void updateAllTextLabels(){
