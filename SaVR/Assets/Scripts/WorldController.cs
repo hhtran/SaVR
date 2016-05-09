@@ -4,7 +4,6 @@ using AssemblyCSharp;
 
 public class WorldController : MonoBehaviour {
 
-	public PlayerAccount playerAccount;
 	public GameObject categoriesParent;
 	private Category mostRecentCategory;
 
@@ -12,8 +11,7 @@ public class WorldController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		playerAccount = new PlayerAccount ();
-		Debug.Log (playerAccount.getTotalMoney ());
+
 	}
 
 	Category createCategory(){
