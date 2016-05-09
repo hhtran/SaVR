@@ -11,12 +11,12 @@ namespace AssemblyCSharp
 		public GameObject moneyPrefab;
 		public GameObject categoryObj;
 
-		public Category (GameObject moneyPrefabObj, GameObject categoriesParentObj, String categoryName)
+		public Category (String categoryName, float goalAmount, float startingAmount, GameObject moneyPrefabObj, GameObject categoriesParentObj)
 		{
 			categoryObj = new GameObject ();
 			categoryObj.transform.name = categoryName;
-			moneyStored = 0.0f;
-			goalAmount = 1000.0f;
+			moneyStored = startingAmount;
+			this.goalAmount = goalAmount;
 			moneyPrefab = moneyPrefabObj;
 
 			categoryObj.transform.SetParent (categoriesParentObj.transform);

@@ -15,7 +15,7 @@ public class WorldController : MonoBehaviour {
 	}
 
 	void createCategory(){
-		Category category = new Category (moneyPrefab, categoriesParent, "Savings Pile");
+		Category category = new Category ("Savings Pile", 1000.0f, 0.0f, moneyPrefab, categoriesParent);
 		category.addMoney (100.0f);
 	}
 
