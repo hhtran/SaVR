@@ -45,6 +45,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\GoldBarData.cs" />
+     <Compile Include="Assets\Scripts\CombineChildMeshes.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
      <Compile Include="Assets\Scripts\MoneyPile.cs" />
      <Compile Include="Assets\Scripts\SteamVR_FirstPersonController.cs" />
@@ -73,6 +75,7 @@
      <Compile Include="Assets\SteamVR\Scripts\SteamVR_Render.cs" />
      <Compile Include="Assets\SteamVR\Scripts\SteamVR_RenderModel.cs" />
      <Compile Include="Assets\SteamVR\Scripts\SteamVR_Skybox.cs" />
+     <Compile Include="Assets\SteamVR\Scripts\SteamVR_SphericalProjection.cs" />
      <Compile Include="Assets\SteamVR\Scripts\SteamVR_Stats.cs" />
      <Compile Include="Assets\SteamVR\Scripts\SteamVR_Status.cs" />
      <Compile Include="Assets\SteamVR\Scripts\SteamVR_StatusText.cs" />
@@ -86,6 +89,7 @@
      <None Include="Assets\SteamVR\Resources\SteamVR_HiddenArea.shader" />
      <None Include="Assets\SteamVR\Resources\SteamVR_Overlay.shader" />
      <None Include="Assets\SteamVR\Resources\SteamVR_Blit.shader" />
+     <None Include="Assets\SteamVR\Resources\SteamVR_SphericalProjection.shader" />
      <None Include="Assets\SteamVR\Resources\SteamVR_AlphaOut.shader" />
      <None Include="Assets\SteamVR\readme.txt" />
      <None Include="Assets\SteamVR\Resources\SteamVR_ColorOut.shader" />
