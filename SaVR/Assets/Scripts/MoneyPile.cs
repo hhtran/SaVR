@@ -17,9 +17,6 @@ public class MoneyPile : MonoBehaviour {
 		int barsCreated = 0;
 		Debug.Log ("Creating bars");
 
-        goldBars = new ArrayList();
-
-
 		while (barsCreated < barsToCreate){
 			Vector3 spawnLocation = new Vector3 (transform.position.x, transform.position.y + barsCreated, transform.position.z);
 			GameObject goldBar = (GameObject)Instantiate(goldBarPrefab, spawnLocation, Quaternion.identity);
@@ -27,23 +24,9 @@ public class MoneyPile : MonoBehaviour {
 			barsCreated++;
 		}
 
-        StartCoroutine("waitThenTurnOffPhysics");
 
 
 	}
-
-    IEnumerator waitThenTurnOffPhysics()
-    {
-        //Do whatever you need done here before waiting
-
-        yield return new WaitForSeconds(3f);
-
-        foreach (GameObject g in goldBars)
-        {
-            Rigidbody rb = g.GetComponent<Rigidbody>();
-            rb.isKinematic = true;
-        }
-    }
 
     // Update is called once per frame
     void Update () {
