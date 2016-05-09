@@ -45,15 +45,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\CameraManager.cs" />
-     <Compile Include="Assets\Category.cs" />
      <Compile Include="Assets\GoldBarData.cs" />
-     <Compile Include="Assets\PlayerAccount.cs" />
+     <Compile Include="Assets\Scripts\CameraManager.cs" />
+     <Compile Include="Assets\Scripts\Category.cs" />
      <Compile Include="Assets\Scripts\CombineChildMeshes.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
      <Compile Include="Assets\Scripts\MoneyPile.cs" />
+     <Compile Include="Assets\Scripts\PlayerAccount.cs" />
      <Compile Include="Assets\Scripts\SteamVR_FirstPersonController.cs" />
      <Compile Include="Assets\Scripts\WandController.cs" />
+     <Compile Include="Assets\Scripts\WorldController.cs" />
      <Compile Include="Assets\SteamVR\Extras\SteamVR_GazeTracker.cs" />
      <Compile Include="Assets\SteamVR\Extras\SteamVR_LaserPointer.cs" />
      <Compile Include="Assets\SteamVR\Extras\SteamVR_Teleporter.cs" />
@@ -86,7 +87,6 @@
      <Compile Include="Assets\SteamVR\Scripts\SteamVR_TrackedObject.cs" />
      <Compile Include="Assets\SteamVR\Scripts\SteamVR_UpdatePoses.cs" />
      <Compile Include="Assets\SteamVR\Scripts\SteamVR_Utils.cs" />
-     <Compile Include="Assets\WorldController.cs" />
      <None Include="Assets\SteamVR\Resources\SteamVR_Fade.shader" />
      <None Include="Assets\SteamVR\Resources\SteamVR_BlitFlip.shader" />
      <None Include="Assets\SteamVR\Resources\SteamVR_ClearAll.shader" />
