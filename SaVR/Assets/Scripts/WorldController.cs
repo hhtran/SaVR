@@ -15,7 +15,7 @@ public class WorldController : MonoBehaviour {
 	}
 
 	Category createCategory(){
-		Vector3 position = new Vector3 (numberOfCategories * 4, 0, 0);
+		Vector3 position = new Vector3 (numberOfCategories * 15, 0, 0);
 		Category category = new Category ("Savings Pile", 1000.0f, 100.0f, categoriesParent, position, Quaternion.identity);
 		numberOfCategories++;
 		return category;

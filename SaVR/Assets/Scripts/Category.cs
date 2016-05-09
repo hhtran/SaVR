@@ -49,6 +49,7 @@ namespace AssemblyCSharp
 			labelsParentObj = new GameObject ();
 			labelsParentObj.name = "Labels Parent";
 			labelsParentObj.transform.SetParent (categoryParentObj.transform);
+			labelsParentObj.transform.position = categoryParentObj.transform.position;
 
 			createAmountTextLabel(startingAmount);
 			createGoalTextLabel(goalAmount);
@@ -60,7 +61,7 @@ namespace AssemblyCSharp
 			GameObject textLabel = Instantiate (textPrefab) as GameObject;
 
 			textLabel.transform.SetParent (labelsParentObj.transform);
-			textLabel.transform.position = position;
+			textLabel.transform.position = labelsParentObj.transform.position + position;
 			textLabel.transform.rotation = rotation;
 
 			return textLabel;
