@@ -9,11 +9,6 @@ public class WorldController : MonoBehaviour {
 
 	private int numberOfCategories = 0;
 
-	// Use this for initialization
-	void Start () {
-
-	}
-
 	Category createCategory(){
 		Vector3 position = new Vector3 (numberOfCategories * 15, 0, 0);
 		Category category = new Category ("Savings Pile", 1000.0f, 100.0f, categoriesParent, position, Quaternion.identity);
@@ -21,7 +16,14 @@ public class WorldController : MonoBehaviour {
 		return category;
 	}
 
-	// Update is called once per frame
+	/* Key mappings for actions
+	 * C: Add a new category/savings pile
+	 * 0: Add 115 to the most recently created category
+	 * 1: Add 1 to the most recently created category
+	 * 2: Add 10 to the most recently created category
+	 * 3: Add 100 to the most recently created category
+	 * 4: Add 1000 to the most recently created category
+	 */
 	void Update () {
 		if (Input.GetKeyDown(KeyCode.C)){
 			mostRecentCategory = createCategory();

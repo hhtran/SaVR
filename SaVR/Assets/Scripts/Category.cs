@@ -5,6 +5,12 @@ using System.Collections.Generic;
 
 namespace AssemblyCSharp
 {
+
+	/*
+	 * A category is equivalent to a "savings pile". Each category has a name, a goal amount,
+	 * and the amount currently stored in the category. 
+	 */
+
 	public class Category : MonoBehaviour
 	{
 		private String categoryName;
@@ -36,6 +42,7 @@ namespace AssemblyCSharp
 			createCategoryLabels (startingAmount, goalAmount);
 		}
 
+		//Checks to see if the goal has been completed. Should be called whenever the amount or goal amount is changed
 		private void checkForGoalCompletion(){
 			if (moneyStored >= goalAmount && firstCompletionOfGoal) {
 				GameObject completionAnimation = Instantiate (Resources.Load (prefabFolder + "Goal Complete", typeof(GameObject))) as GameObject;
@@ -44,6 +51,10 @@ namespace AssemblyCSharp
 				Debug.Log ("Completed goal");
 			}
 		}
+
+/******************************************
+* Text Labels Creation
+******************************************/
 
 		private void createCategoryLabels(float startingAmount, float goalAmount){
 			labelsParentObj = new GameObject ();
@@ -102,6 +113,32 @@ namespace AssemblyCSharp
 			moneySubObjects = convertAmountToPlaceValues (startingAmount, categoryParentObj);
 		}
 			
+/*****************************************
+ * Updating Labels
+ *****************************************/
+
+		private void updateAllTextLabels(){
+			updateAmountLabel();
+			updateGoalLabel ();
+			updateCategoryLabel ();
+		}
+
+		private void updateAmountLabel() {
+			setTextForTextLabel (amountTextLabel, "Amount stored: " + moneyStored.ToString ());
+		}
+
+		private void updateGoalLabel(){
+			setTextForTextLabel (goalTextLabel, "Goal: " + goalAmount.ToString ());
+		}
+
+		private void updateCategoryLabel(){
+			setTextForTextLabel (categoryNameTextLabel, categoryName);
+		}
+
+/******************************************
+ * Money Generation
+ *****************************************/
+
 		//	Takes in a float amount and returns a dictionary of lists,
 		//	where the keys are integers (1, 10, 100, etc) and the lists are 
 		//	lists of GameObjects of the in-world objects representing a money amount
@@ -158,6 +195,10 @@ namespace AssemblyCSharp
 		}
 
 
+/*****************************************
+ * Setters/Getters
+ *****************************************/
+
 		public float getMoneyStored () {
 			return moneyStored;
 		}
@@ -168,6 +209,7 @@ namespace AssemblyCSharp
 
 		public void addMoney(float amount) {
 			Dictionary<int, List<GameObject>> newMoneyObjectsMap = convertAmountToPlaceValues (amount, categoryParentObj);
+
 			foreach (int placeValue in newMoneyObjectsMap.Keys) {
 				if (moneySubObjects.ContainsKey (placeValue)) {
 					moneySubObjects [placeValue].AddRange (newMoneyObjectsMap [placeValue]);
@@ -175,7 +217,6 @@ namespace AssemblyCSharp
 					moneySubObjects.Add (placeValue, newMoneyObjectsMap[placeValue]);
 				}
 			}
-
 
 			moneyStored += amount;
 			updateAmountLabel ();
@@ -191,24 +232,6 @@ namespace AssemblyCSharp
 			goalAmount = newGoalAmount;
 			updateGoalLabel ();
 			checkForGoalCompletion ();
-		}
-
-		private void updateAllTextLabels(){
-			updateAmountLabel();
-			updateGoalLabel ();
-			updateCategoryLabel ();
-		}
-
-		private void updateAmountLabel() {
-			setTextForTextLabel (amountTextLabel, "Amount stored: " + moneyStored.ToString ());
-		}
-
-		private void updateGoalLabel(){
-			setTextForTextLabel (goalTextLabel, "Goal: " + goalAmount.ToString ());
-		}
-
-		private void updateCategoryLabel(){
-			setTextForTextLabel (categoryNameTextLabel, categoryName);
 		}
 
 	}
