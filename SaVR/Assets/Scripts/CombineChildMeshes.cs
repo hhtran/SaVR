@@ -1,5 +1,4 @@
-﻿#pragma strict
-
+﻿
 using UnityEngine;
 using System.Collections.Generic;
 
