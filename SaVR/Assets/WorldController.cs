@@ -8,6 +8,8 @@ public class WorldController : MonoBehaviour {
 	public GameObject categoriesParent;
 	private Category mostRecentCategory;
 
+	private int numberOfCategories = 0;
+
 	// Use this for initialization
 	void Start () {
 		playerAccount = new PlayerAccount ();
@@ -15,7 +17,9 @@ public class WorldController : MonoBehaviour {
 	}
 
 	Category createCategory(){
-		Category category = new Category ("Savings Pile", 1000.0f, 100.0f, categoriesParent);
+		Vector3 position = new Vector3 (numberOfCategories * 4, 0, 0);
+		Category category = new Category ("Savings Pile", 1000.0f, 100.0f, categoriesParent, position, Quaternion.identity);
+		numberOfCategories++;
 		return category;
 	}
 

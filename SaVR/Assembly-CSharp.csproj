@@ -45,6 +45,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\CameraManager.cs" />
      <Compile Include="Assets\Category.cs" />
      <Compile Include="Assets\GoldBarData.cs" />
      <Compile Include="Assets\PlayerAccount.cs" />

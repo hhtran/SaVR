@@ -7,24 +7,33 @@ namespace AssemblyCSharp
 {
 	public class Category : MonoBehaviour
 	{
+		private String prefabFolder = "Prefabs/";
 		private float moneyStored;
 		private float goalAmount;
 		private GameObject categoryRootObj; //The empty game object that serves as the root to hold all categories
 		private GameObject categoryParentObj; //The root game object to hold game objects related to this category
 		private Dictionary<int, List<GameObject>> moneySubObjects = new Dictionary<int, List<GameObject>>(); //A dictionary mapping from a place value (e.g. 100) to an array of the child money GameObjects that are of that placevalue
 
-		public Category (String categoryName, float goalAmount, float startingAmount, GameObject categoriesRootObj)
+		public Category (String categoryName, float goalAmount, float startingAmount, GameObject categoriesRootObj,  Vector3 position, Quaternion rotation)
 		{
 			moneyStored = startingAmount;
 			this.goalAmount = goalAmount;
 
-			createWorldObjects (categoryName, startingAmount, categoriesRootObj);
+			createWorldObjects (categoryName, startingAmount, categoriesRootObj, position, rotation);
 		}
 
-		private void createWorldObjects(String categoryName, float startingAmount, GameObject categoriesRootObj) {
+		private void createWorldObjects(String categoryName, float startingAmount, GameObject categoriesRootObj, Vector3 position, Quaternion rotation) {
 			categoryParentObj = new GameObject ();
+			categoryParentObj.transform.position = position;
+			categoryParentObj.transform.rotation = rotation;
 			categoryParentObj.transform.name = categoryName;
 			categoryParentObj.transform.SetParent (categoriesRootObj.transform);
+
+			GameObject barrierPrefab = Resources.Load (prefabFolder + "Barrier", typeof(GameObject)) as GameObject;
+			GameObject barrierInstance = Instantiate (barrierPrefab);
+			barrierInstance.transform.position = categoryParentObj.transform.position;
+			barrierInstance.transform.rotation = barrierInstance.transform.rotation;
+
 			moneySubObjects = convertAmountToPlaceValues (startingAmount, categoryParentObj);
 		}
 			
@@ -73,7 +82,6 @@ namespace AssemblyCSharp
 
 		// Retrieves the prefab for the money object. Note that the prefab folder must be inside the resources folder
 		private GameObject getPrefabForPlaceValue(int placeValue) {
-			String prefabFolder = "Prefabs/";
 			if (placeValue != 1 && placeValue % 10 > 0)
 				return new GameObject ();
 			switch (placeValue) {
