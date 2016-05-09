@@ -6,10 +6,12 @@ public class WorldController : MonoBehaviour {
 
 	public GameObject categoriesParent;
 	private Category mostRecentCategory;
+	private bool atLeastOneCategoryExists = false;
 
 	private int numberOfCategories = 0;
 
 	Category createCategory(){
+		atLeastOneCategoryExists = true;
 		Vector3 position = new Vector3 (numberOfCategories * 15, 0, 0);
 		Category category = new Category ("Savings Pile", 1000.0f, 100.0f, categoriesParent, position, Quaternion.identity);
 		numberOfCategories++;
@@ -17,6 +19,7 @@ public class WorldController : MonoBehaviour {
 	}
 
 	/* Key mappings for actions
+	 * WASD or arrow keys: Move the camera around
 	 * C: Add a new category/savings pile
 	 * 0: Add 115 to the most recently created category
 	 * 1: Add 1 to the most recently created category
@@ -28,20 +31,20 @@ public class WorldController : MonoBehaviour {
 		if (Input.GetKeyDown(KeyCode.C)){
 			mostRecentCategory = createCategory();
 		}
-		if (Input.GetKeyDown (KeyCode.Alpha0)) {
-			mostRecentCategory.addMoney (115.0f);
+
+		if (atLeastOneCategoryExists) {
+			if (Input.GetKeyDown (KeyCode.Alpha0)) {
+				mostRecentCategory.addMoney (115.0f);
+			} else if (Input.GetKeyDown (KeyCode.Alpha1)) {
+				mostRecentCategory.addMoney (1.0f);
+			} else if (Input.GetKeyDown (KeyCode.Alpha2)) {
+				mostRecentCategory.addMoney (10.0f);
+			} else if (Input.GetKeyDown (KeyCode.Alpha3)) {
+				mostRecentCategory.addMoney (100.0f);
+			} else if (Input.GetKeyDown (KeyCode.Alpha4)) {
+				mostRecentCategory.addMoney (1000.0f);
+			}
 		}
-		if (Input.GetKeyDown (KeyCode.Alpha1)) {
-			mostRecentCategory.addMoney (1.0f);
-		}
-		if (Input.GetKeyDown (KeyCode.Alpha2)) {
-			mostRecentCategory.addMoney (10.0f);
-		}
-		if (Input.GetKeyDown (KeyCode.Alpha3)) {
-			mostRecentCategory.addMoney (100.0f);
-		}
-		if (Input.GetKeyDown (KeyCode.Alpha4)) {
-			mostRecentCategory.addMoney (1000.0f);
-		}
+
 	}
 }
