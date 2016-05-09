@@ -47,6 +47,8 @@ namespace AssemblyCSharp
 
 		private void createCategoryLabels(float startingAmount, float goalAmount){
 			labelsParentObj = new GameObject ();
+			labelsParentObj.name = "Labels Parent";
+			labelsParentObj.transform.SetParent (categoryParentObj.transform);
 
 			createAmountTextLabel(startingAmount);
 			createGoalTextLabel(goalAmount);
