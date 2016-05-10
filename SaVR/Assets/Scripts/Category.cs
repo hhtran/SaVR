@@ -18,6 +18,12 @@ namespace AssemblyCSharp
 		private String prefabFolder = "Prefabs/";
 		private String defaultUnit = "GoldBar";
 		private String currentUnit = "GoldBar";
+		private Dictionary<String, float> unitMap = new Dictionary<String, float>()
+		{
+			{ "GoldBar", 1.0f },
+			{ "PS4", 400.0f },
+			{ "Starbucks", 3.50f }
+		};
 		#endregion
 
 		#region Data stored vars
@@ -149,21 +155,12 @@ namespace AssemblyCSharp
 		//	where the keys are integers (1, 10, 100, etc) and the lists are 
 		//	lists of GameObjects of the in-world objects representing a money amount
 		private Dictionary<int, List<GameObject>> generateMoneyObjectsForAmount(float amount, GameObject categoryParentObj, String unit){
-			float convertedUnits = amount;
-			switch (unit) {
-			case "PS4":
-				convertedUnits = amount / 400.0f;
-				break;
-			case "Starbucks":
-				convertedUnits = amount / 3.5f;
-				break;
-			default:
-				return generateMoneyObjectsForObjectUnits (convertedUnits, categoryParentObj, defaultUnit);
-			}
+			float convertedUnits = amount / unitMap [unit];
 
-			return generateMoneyObjectsForObjectUnits(convertedUnits, categoryParentObj, unit);
+			return generateMoneyObjectsForObjectUnits (convertedUnits, categoryParentObj, unit);
 		}
 
+		// Returns the money objects ONCE THE RAW AMOUNT HAS BEEN CONVERTED TO GAME OBJECT UNITS
 		private Dictionary<int, List<GameObject>> generateMoneyObjectsForObjectUnits(float units, GameObject categoryParentobj, String unit){
 			int placeValue = 1;
 			int amountToConvert = (int) units;
