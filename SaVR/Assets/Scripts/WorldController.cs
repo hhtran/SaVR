@@ -21,6 +21,8 @@ public class WorldController : MonoBehaviour {
 	/* Key mappings for actions
 	 * WASD or arrow keys: Move the camera around
 	 * C: Add a new category/savings pile
+	 * X: Convert the money in the most recently created category into PS4 units
+	 * Z: Convert money to Starbucks cups
 	 * 0: Add 115 to the most recently created category
 	 * 1: Add 1 to the most recently created category
 	 * 2: Add 10 to the most recently created category
@@ -44,7 +46,9 @@ public class WorldController : MonoBehaviour {
 			} else if (Input.GetKeyDown (KeyCode.Alpha4)) {
 				mostRecentCategory.addMoney (1000.0f);
 			} else if (Input.GetKeyDown (KeyCode.X)) {
-				mostRecentCategory.convertVisualizationUnit ();
+				mostRecentCategory.convertVisualizationUnit ("PS4");
+			} else if (Input.GetKeyDown (KeyCode.Z)) {
+				mostRecentCategory.convertVisualizationUnit ("Starbucks");
 			}
 		}
 

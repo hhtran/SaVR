@@ -254,8 +254,8 @@ namespace AssemblyCSharp
 
 
 		#region	Convert visualization objects
-		public void convertVisualizationUnit() {
-			currentUnit = "PS4";
+		public void convertVisualizationUnit(String unit) {
+			currentUnit = unit;
 			destroyMoneyObjects ();
 			moneySubObjects = generateMoneyObjectsForAmount (moneyStored, currentUnit);
 		}
