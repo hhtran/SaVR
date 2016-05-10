@@ -35,6 +35,7 @@ namespace AssemblyCSharp
 		#region Root and parent grouping objects vars
 		private GameObject categoryRootObj; //The empty game object that serves as the root to hold all categories
 		private GameObject categoryParentObj; //The root game object to hold game objects related to this category
+		private GameObject moneyObjectParentObj; //The root game object to hold the money object units
 		private Dictionary<int, List<GameObject>> moneySubObjects = new Dictionary<int, List<GameObject>>(); //A dictionary mapping from a place value (e.g. 100) to an array of the child money GameObjects that are of that placevalue
 		#endregion
 
@@ -120,12 +121,18 @@ namespace AssemblyCSharp
 			categoryParentObj.transform.name = categoryName;
 			categoryParentObj.transform.SetParent (categoriesRootObj.transform);
 
+			moneyObjectParentObj = new GameObject ();
+			moneyObjectParentObj.transform.position = categoryParentObj.transform.position;
+			moneyObjectParentObj.transform.rotation = categoryParentObj.transform.rotation;
+			moneyObjectParentObj.transform.SetParent (categoryParentObj.transform);
+			moneyObjectParentObj.name = "Money Parent";
+
 			GameObject barrierPrefab = Resources.Load (prefabFolder + "Barrier", typeof(GameObject)) as GameObject;
 			GameObject barrierInstance = Instantiate (barrierPrefab);
 			barrierInstance.transform.position = categoryParentObj.transform.position;
 			barrierInstance.transform.rotation = barrierInstance.transform.rotation;
 
-			moneySubObjects = generateMoneyObjectsForAmount (startingAmount, categoryParentObj, currentUnit);
+			moneySubObjects = generateMoneyObjectsForAmount (startingAmount, currentUnit);
 		}
 		#endregion
 
@@ -154,14 +161,14 @@ namespace AssemblyCSharp
 		//	Takes in a float amount and returns a dictionary of lists,
 		//	where the keys are integers (1, 10, 100, etc) and the lists are 
 		//	lists of GameObjects of the in-world objects representing a money amount
-		private Dictionary<int, List<GameObject>> generateMoneyObjectsForAmount(float amount, GameObject categoryParentObj, String unit){
+		private Dictionary<int, List<GameObject>> generateMoneyObjectsForAmount(float amount, String unit){
 			float convertedUnits = amount / unitMap [unit];
 
-			return generateMoneyObjectsForObjectUnits (convertedUnits, categoryParentObj, unit);
+			return generateMoneyObjectsForObjectUnits (convertedUnits, unit);
 		}
 
 		// Returns the money objects ONCE THE RAW AMOUNT HAS BEEN CONVERTED TO GAME OBJECT UNITS
-		private Dictionary<int, List<GameObject>> generateMoneyObjectsForObjectUnits(float units, GameObject categoryParentobj, String unit){
+		private Dictionary<int, List<GameObject>> generateMoneyObjectsForObjectUnits(float units, String unit){
 			int placeValue = 1;
 			int amountToConvert = (int) units;
 
@@ -173,7 +180,7 @@ namespace AssemblyCSharp
 				amountToConvert -= numberInPlaceValue;
 
 				//Convert to objects for this place value
-				List<GameObject> placeValueObjectList = createPlaceValueObjects(placeValue, digitValue, categoryParentObj, unit);
+				List<GameObject> placeValueObjectList = createPlaceValueObjects(placeValue, digitValue, unit);
 				placeValuesMap.Add (placeValue, placeValueObjectList);
 
 				//Increment
@@ -183,15 +190,15 @@ namespace AssemblyCSharp
 		}
 
 		// Returns a list of in-world game objects for a given number of objects, under the category parent object
-		private List<GameObject> createPlaceValueObjects(int placeValue, float numberOfObjs, GameObject categoryParentObject, String unit){
+		private List<GameObject> createPlaceValueObjects(int placeValue, float numberOfObjs, String unit){
 			List<GameObject> placeValueObjectList = new List<GameObject> ();
 			GameObject prefabForPlaceValue = getPrefabForPlaceValue (placeValue, unit);
 
 			for (int i = 0; i < numberOfObjs; i++) {
-				Vector3 moneyObjPosition = categoryParentObject.transform.position;
-				moneyObjPosition.y += i + 1;
+				Vector3 moneyObjPosition = moneyObjectParentObj.transform.position;
+				moneyObjPosition.y += i + 5;
 				GameObject moneyPrefabInstance = Instantiate (prefabForPlaceValue, moneyObjPosition, Quaternion.identity) as GameObject;
-				moneyPrefabInstance.transform.SetParent (categoryParentObj.transform);
+				moneyPrefabInstance.transform.SetParent (moneyObjectParentObj.transform);
 
 				placeValueObjectList.Add (moneyPrefabInstance);
 			}
@@ -217,7 +224,7 @@ namespace AssemblyCSharp
 		}
 
 		public void addMoney(float amount) {
-			Dictionary<int, List<GameObject>> newMoneyObjectsMap = generateMoneyObjectsForAmount (amount, categoryParentObj, currentUnit);
+			Dictionary<int, List<GameObject>> newMoneyObjectsMap = generateMoneyObjectsForAmount (amount, currentUnit);
 
 			foreach (int placeValue in newMoneyObjectsMap.Keys) {
 				if (moneySubObjects.ContainsKey (placeValue)) {
@@ -248,7 +255,15 @@ namespace AssemblyCSharp
 
 		#region	Convert visualization objects
 		public void convertVisualizationUnit() {
+			currentUnit = "PS4";
+			destroyMoneyObjects ();
+			moneySubObjects = generateMoneyObjectsForAmount (moneyStored, currentUnit);
+		}
 
+		private void destroyMoneyObjects(){
+			foreach (Transform child in moneyObjectParentObj.transform) {
+				GameObject.Destroy(child.gameObject);
+			}
 		}
 		#endregion
 	
