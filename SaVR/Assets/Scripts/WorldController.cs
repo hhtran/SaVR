@@ -43,6 +43,8 @@ public class WorldController : MonoBehaviour {
 				mostRecentCategory.addMoney (100.0f);
 			} else if (Input.GetKeyDown (KeyCode.Alpha4)) {
 				mostRecentCategory.addMoney (1000.0f);
+			} else if (Input.GetKeyDown (KeyCode.X)) {
+				mostRecentCategory.convertVisualizationUnit ();
 			}
 		}
 
