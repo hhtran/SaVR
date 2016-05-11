@@ -30,6 +30,7 @@ namespace AssemblyCSharp
 		private float moneyStored;
 		private float goalAmount;
 		private bool firstCompletionOfGoal = true;
+		private float unconvertedUnits = 0.0f;
 		#endregion
 
 		#region Root and parent grouping objects vars
@@ -163,6 +164,14 @@ namespace AssemblyCSharp
 		//	lists of GameObjects of the in-world objects representing a money amount
 		private Dictionary<int, List<GameObject>> generateMoneyObjectsForAmount(float amount, String unit){
 			float convertedUnits = amount / unitMap [unit];
+			unconvertedUnits += convertedUnits - (int)convertedUnits;
+			Debug.Log (convertedUnits);
+			Debug.Log (unconvertedUnits);
+			if (unconvertedUnits >= 1.0f) {
+				Debug.Log ("Trigger");
+				convertedUnits += (int)unconvertedUnits;
+				unconvertedUnits = unconvertedUnits - (int)unconvertedUnits;
+			}
 
 			return generateMoneyObjectsForObjectUnits (convertedUnits, unit);
 		}
@@ -255,6 +264,7 @@ namespace AssemblyCSharp
 
 		#region	Convert visualization objects
 		public void convertVisualizationUnit(String unit) {
+			unconvertedUnits = 0.0f;
 			currentUnit = unit;
 			destroyMoneyObjects ();
 			moneySubObjects = generateMoneyObjectsForAmount (moneyStored, currentUnit);
