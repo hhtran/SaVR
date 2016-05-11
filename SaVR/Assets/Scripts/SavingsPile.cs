@@ -19,7 +19,7 @@ namespace AssemblyCSharp
 		base(categoryName, startingAmount, categoriesRootObj,  position, rotation)
 		{
 			this.goalAmount = goalAmount;
-
+			updateAllTextLabels ();
 		}
 		#endregion
 
