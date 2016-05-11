@@ -5,17 +5,27 @@ using AssemblyCSharp;
 public class WorldController : MonoBehaviour {
 
 	public GameObject savingsPilesParent;
+	public GameObject categoriesParent;
 	private Category mostRecentSavingsPile;
 	private bool atLeastOneSavingsPileExists = false;
+	private Category generalMoneyPile;
 
 	private int numberOfSavingsPiles = 0;
 
-	Category createSavingsPile(){
+	SavingsPile createSavingsPile(Vector3 position, Quaternion rotation){
 		atLeastOneSavingsPileExists = true;
-		Vector3 position = new Vector3 (numberOfSavingsPiles * 15, 0, 0);
-		SavingsPile savingsPile = new SavingsPile ("Savings Pile", 1000.0f, 100.0f, savingsPilesParent, position, Quaternion.identity);
+		SavingsPile savingsPile = new SavingsPile ("Savings Pile", 1000.0f, 100.0f, savingsPilesParent, position, rotation);
 		numberOfSavingsPiles++;
 		return savingsPile;
+	}
+
+	Category createGeneralMoneyPile(Vector3 position, Quaternion rotation){
+		generalMoneyPile = new Category ("Free Money", 32827.0f, categoriesParent, position, rotation);
+		return generalMoneyPile;
+	}
+
+	void Awake(){
+		createGeneralMoneyPile (new Vector3 (0, 0, 0), Quaternion.identity);
 	}
 
 	/* Key mappings for actions
@@ -31,7 +41,11 @@ public class WorldController : MonoBehaviour {
 	 */
 	void Update () {
 		if (Input.GetKeyDown(KeyCode.C)){
-			mostRecentSavingsPile = createSavingsPile();
+			mostRecentSavingsPile = createSavingsPile(new Vector3((numberOfSavingsPiles + 1) * 15, 0, 0), Quaternion.identity);
+		} else if (Input.GetKeyDown (KeyCode.V)) {
+			generalMoneyPile.convertVisualizationUnit ("Starbucks");
+		} else if (Input.GetKeyDown (KeyCode.B)) {
+			generalMoneyPile.convertVisualizationUnit ("PS4");
 		}
 
 		if (atLeastOneSavingsPileExists) {
