@@ -100,17 +100,17 @@ namespace AssemblyCSharp
 		}
 
 		private void createAmountTextLabel(float startingAmount){
-			amountTextLabel = createTextLabel (new Vector3(-3, 1, -1), Quaternion.identity);
+			amountTextLabel = createTextLabel (new Vector3(-3, 5, -1), Quaternion.identity);
 			setTextForTextLabel(amountTextLabel, "Amount stored: $" + startingAmount.ToString());
 		}
 
 		private void createGoalTextLabel(float goalAmount){
-			goalTextLabel = createTextLabel (new Vector3(-3, 3, -1), Quaternion.identity);
+			goalTextLabel = createTextLabel (new Vector3(-3, 7, -1), Quaternion.identity);
 			setTextForTextLabel (goalTextLabel, "Goal: $" + goalAmount.ToString ());
 		}
 
 		private void createCategoryTextLabel(){
-			categoryNameTextLabel = createTextLabel (new Vector3(-3, 5, -1), Quaternion.identity);
+			categoryNameTextLabel = createTextLabel (new Vector3(-3, 9, -1), Quaternion.identity);
 			setTextForTextLabel (categoryNameTextLabel, categoryName);
 		}
 
