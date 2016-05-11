@@ -120,11 +120,11 @@ namespace AssemblyCSharp
 			updateCategoryLabel ();
 		}
 
-		private void updateAmountLabel() {
+		protected void updateAmountLabel() {
 			setTextForTextLabel (amountTextLabel, "Amount stored: $" + moneyStored.ToString ());
 		}
 
-		private void updateCategoryLabel(){
+		protected void updateCategoryLabel(){
 			setTextForTextLabel (categoryNameTextLabel, categoryName);
 		}
 		#endregion
@@ -134,7 +134,7 @@ namespace AssemblyCSharp
 		//	Takes in a float amount and returns a dictionary of lists,
 		//	where the keys are integers (1, 10, 100, etc) and the lists are 
 		//	lists of GameObjects of the in-world objects representing a money amount
-		private Dictionary<int, List<GameObject>> generateMoneyObjectsForAmount(float amount, String unit){
+		protected Dictionary<int, List<GameObject>> generateMoneyObjectsForAmount(float amount, String unit){
 			float convertedUnits = amount / unitMap [unit];
 			unconvertedUnits += convertedUnits - (int)convertedUnits;
 			Debug.Log (convertedUnits);
@@ -149,7 +149,7 @@ namespace AssemblyCSharp
 		}
 
 		// Returns the money objects ONCE THE RAW AMOUNT HAS BEEN CONVERTED TO GAME OBJECT UNITS
-		private Dictionary<int, List<GameObject>> generateMoneyObjectsForObjectUnits(float units, String unit){
+		protected Dictionary<int, List<GameObject>> generateMoneyObjectsForObjectUnits(float units, String unit){
 			int placeValue = 1;
 			int amountToConvert = (int) units;
 
@@ -171,7 +171,7 @@ namespace AssemblyCSharp
 		}
 
 		// Returns a list of in-world game objects for a given number of objects, under the category parent object
-		private List<GameObject> createPlaceValueObjects(int placeValue, float numberOfObjs, String unit){
+		protected List<GameObject> createPlaceValueObjects(int placeValue, float numberOfObjs, String unit){
 			List<GameObject> placeValueObjectList = new List<GameObject> ();
 			GameObject prefabForPlaceValue = getPrefabForPlaceValue (placeValue, unit);
 
@@ -187,7 +187,7 @@ namespace AssemblyCSharp
 		}
 
 		// Retrieves the prefab for the money object. Note that the prefab folder must be inside the resources folder
-		private GameObject getPrefabForPlaceValue(int placeValue, String unit) {
+		protected GameObject getPrefabForPlaceValue(int placeValue, String unit) {
 			if ((placeValue != 1 && placeValue % 10 > 0) || placeValue > 1000)
 				return new GameObject ();
 			return Resources.Load (prefabFolder + unit + " " + placeValue.ToString(), typeof(GameObject)) as GameObject;
@@ -234,7 +234,7 @@ namespace AssemblyCSharp
 			moneySubObjects = generateMoneyObjectsForAmount (moneyStored, currentUnit);
 		}
 
-		private void destroyMoneyObjects(){
+		protected void destroyMoneyObjects(){
 			foreach (Transform child in moneyObjectParentObj.transform) {
 				GameObject.Destroy(child.gameObject);
 			}
