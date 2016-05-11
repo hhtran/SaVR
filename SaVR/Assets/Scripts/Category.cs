@@ -14,11 +14,11 @@ namespace AssemblyCSharp
 	public class Category : MonoBehaviour
 	{
 		#region String Parameter vars
-		private String categoryName;
-		private String prefabFolder = "Prefabs/";
-		private String defaultUnit = "GoldBar";
-		private String currentUnit = "GoldBar";
-		private Dictionary<String, float> unitMap = new Dictionary<String, float>()
+		protected String categoryName;
+		protected String prefabFolder = "Prefabs/";
+		protected String defaultUnit = "GoldBar";
+		protected String currentUnit = "GoldBar";
+		protected Dictionary<String, float> unitMap = new Dictionary<String, float>()
 		{
 			{ "GoldBar", 1.0f },
 			{ "PS4", 400.0f },
@@ -27,95 +27,34 @@ namespace AssemblyCSharp
 		#endregion
 
 		#region Data stored vars
-		private float moneyStored;
-		private float goalAmount;
-		private bool firstCompletionOfGoal = true;
-		private float unconvertedUnits = 0.0f;
+		protected float moneyStored;
+		protected float unconvertedUnits = 0.0f;
 		#endregion
 
 		#region Root and parent grouping objects vars
-		private GameObject categoryRootObj; //The empty game object that serves as the root to hold all categories
-		private GameObject categoryParentObj; //The root game object to hold game objects related to this category
-		private GameObject moneyObjectParentObj; //The root game object to hold the money object units
-		private Dictionary<int, List<GameObject>> moneySubObjects = new Dictionary<int, List<GameObject>>(); //A dictionary mapping from a place value (e.g. 100) to an array of the child money GameObjects that are of that placevalue
+		protected GameObject categoryRootObj; //The empty game object that serves as the root to hold all categories
+		protected GameObject categoryParentObj; //The root game object to hold game objects related to this category
+		protected GameObject moneyObjectParentObj; //The root game object to hold the money object units
+		protected Dictionary<int, List<GameObject>> moneySubObjects = new Dictionary<int, List<GameObject>>(); //A dictionary mapping from a place value (e.g. 100) to an array of the child money GameObjects that are of that placevalue
 		#endregion
 
 		#region Text labels vars
-		private GameObject labelsParentObj; //The empty parent object to group the labels together
-		private GameObject amountTextLabel;
-		private GameObject categoryNameTextLabel;
-		private GameObject goalTextLabel;
+		protected GameObject labelsParentObj; //The empty parent object to group the labels together
+		protected GameObject amountTextLabel;
+		protected GameObject categoryNameTextLabel;
 		#endregion
 
 		#region Instantiation
-		public Category (String categoryName, float goalAmount, float startingAmount, GameObject categoriesRootObj,  Vector3 position, Quaternion rotation)
+		public Category (String categoryName, float startingAmount, GameObject categoriesRootObj,  Vector3 position, Quaternion rotation)
 		{
 			moneyStored = startingAmount;
-			this.goalAmount = goalAmount;
 			this.categoryName = categoryName;
 
 			createWorldObjects (startingAmount, categoriesRootObj, position, rotation);
-			createCategoryLabels (startingAmount, goalAmount);
-		}
-		#endregion
-
-		#region Goal Checking/Completion
-
-		//Checks to see if the goal has been completed. Should be called whenever the amount or goal amount is changed
-		private void checkForGoalCompletion(){
-			if (moneyStored >= goalAmount && firstCompletionOfGoal) {
-				GameObject completionAnimation = Instantiate (Resources.Load (prefabFolder + "Goal Complete", typeof(GameObject))) as GameObject;
-				completionAnimation.transform.position = categoryParentObj.transform.position + new Vector3(0, 5, 0);
-				firstCompletionOfGoal = false;
-				Debug.Log ("Completed goal");
-			}
-		}
-		#endregion
-
-		#region	Text Labels Creation	
-		private void createCategoryLabels(float startingAmount, float goalAmount){
-			labelsParentObj = new GameObject ();
-			labelsParentObj.name = "Labels Parent";
-			labelsParentObj.transform.SetParent (categoryParentObj.transform);
-			labelsParentObj.transform.position = categoryParentObj.transform.position;
-
-			createAmountTextLabel(startingAmount);
-			createGoalTextLabel(goalAmount);
-			createCategoryTextLabel();
+			createCategoryLabels ();
 		}
 
-		private GameObject createTextLabel(Vector3 position, Quaternion rotation){
-			GameObject textPrefab = Resources.Load (prefabFolder + "Text", typeof(GameObject)) as GameObject;
-			GameObject textLabel = Instantiate (textPrefab) as GameObject;
-
-			textLabel.transform.SetParent (labelsParentObj.transform);
-			textLabel.transform.position = labelsParentObj.transform.position + position;
-			textLabel.transform.rotation = rotation;
-
-			return textLabel;
-		}
-
-		private void setTextForTextLabel(GameObject textObj, String text){
-			TextMesh tm = textObj.transform.GetComponent<TextMesh>();
-			tm.text = text;
-		}
-
-		private void createAmountTextLabel(float startingAmount){
-			amountTextLabel = createTextLabel (new Vector3(-3, 5, -1), Quaternion.identity);
-			setTextForTextLabel(amountTextLabel, "Amount stored: $" + startingAmount.ToString());
-		}
-
-		private void createGoalTextLabel(float goalAmount){
-			goalTextLabel = createTextLabel (new Vector3(-3, 7, -1), Quaternion.identity);
-			setTextForTextLabel (goalTextLabel, "Goal: $" + goalAmount.ToString ());
-		}
-
-		private void createCategoryTextLabel(){
-			categoryNameTextLabel = createTextLabel (new Vector3(-3, 9, -1), Quaternion.identity);
-			setTextForTextLabel (categoryNameTextLabel, categoryName);
-		}
-
-		private void createWorldObjects(float startingAmount, GameObject categoriesRootObj, Vector3 position, Quaternion rotation) {
+		protected void createWorldObjects(float startingAmount, GameObject categoriesRootObj, Vector3 position, Quaternion rotation) {
 			categoryParentObj = new GameObject ();
 			categoryParentObj.transform.position = position;
 			categoryParentObj.transform.rotation = rotation;
@@ -137,20 +76,52 @@ namespace AssemblyCSharp
 		}
 		#endregion
 
-		#region	Updating Labels
 
-		private void updateAllTextLabels(){
+
+		#region	Text Labels
+		protected virtual void createCategoryLabels(){
+			labelsParentObj = new GameObject ();
+			labelsParentObj.name = "Labels Parent";
+			labelsParentObj.transform.SetParent (categoryParentObj.transform);
+			labelsParentObj.transform.position = categoryParentObj.transform.position;
+
+			createCategoryTextLabel(new Vector3(-3, 9, -1), Quaternion.identity);
+			createAmountTextLabel(new Vector3(-3, 7, -1), Quaternion.identity);
+		}
+
+		protected GameObject createTextLabel(Vector3 position, Quaternion rotation){
+			GameObject textPrefab = Resources.Load (prefabFolder + "Text", typeof(GameObject)) as GameObject;
+			GameObject textLabel = Instantiate (textPrefab) as GameObject;
+
+			textLabel.transform.SetParent (labelsParentObj.transform);
+			textLabel.transform.position = labelsParentObj.transform.position + position;
+			textLabel.transform.rotation = rotation;
+
+			return textLabel;
+		}
+
+		protected void setTextForTextLabel(GameObject textObj, String text){
+			TextMesh tm = textObj.transform.GetComponent<TextMesh>();
+			tm.text = text;
+		}
+
+		protected void createAmountTextLabel(Vector3 position, Quaternion rotation){
+			amountTextLabel = createTextLabel (position, rotation);
+			setTextForTextLabel(amountTextLabel, "Amount stored: $" + moneyStored.ToString());
+		}
+			
+		protected void createCategoryTextLabel(Vector3 position, Quaternion rotation){
+			categoryNameTextLabel = createTextLabel (position, rotation);
+			setTextForTextLabel (categoryNameTextLabel, categoryName);
+		}
+
+		protected virtual void updateAllTextLabels(){
 			updateAmountLabel();
-			updateGoalLabel ();
 			updateCategoryLabel ();
 		}
 
 		private void updateAmountLabel() {
 			setTextForTextLabel (amountTextLabel, "Amount stored: $" + moneyStored.ToString ());
-		}
-
-		private void updateGoalLabel(){
-			setTextForTextLabel (goalTextLabel, "Goal: $" + goalAmount.ToString ());
 		}
 
 		private void updateCategoryLabel(){
@@ -159,6 +130,7 @@ namespace AssemblyCSharp
 		#endregion
 
 		#region Money Generation
+
 		//	Takes in a float amount and returns a dictionary of lists,
 		//	where the keys are integers (1, 10, 100, etc) and the lists are 
 		//	lists of GameObjects of the in-world objects representing a money amount
@@ -228,11 +200,9 @@ namespace AssemblyCSharp
 			return moneyStored;
 		}
 
-		public float getGoalAmount () {
-			return goalAmount;
-		}
 
-		public void addMoney(float amount) {
+
+		public virtual void addMoney(float amount) {
 			Dictionary<int, List<GameObject>> newMoneyObjectsMap = generateMoneyObjectsForAmount (amount, currentUnit);
 
 			foreach (int placeValue in newMoneyObjectsMap.Keys) {
@@ -245,19 +215,13 @@ namespace AssemblyCSharp
 
 			moneyStored += amount;
 			updateAmountLabel ();
-			checkForGoalCompletion ();
 		}
 
 		public void removeMoney(float amount) {
 			moneyStored -= amount;
 			updateAmountLabel ();
 		}
-
-		public void changeGoalAmount (float newGoalAmount) {
-			goalAmount = newGoalAmount;
-			updateGoalLabel ();
-			checkForGoalCompletion ();
-		}
+			
 		#endregion
 
 

@@ -4,18 +4,18 @@ using AssemblyCSharp;
 
 public class WorldController : MonoBehaviour {
 
-	public GameObject categoriesParent;
-	private Category mostRecentCategory;
-	private bool atLeastOneCategoryExists = false;
+	public GameObject savingsPilesParent;
+	private Category mostRecentSavingsPile;
+	private bool atLeastOneSavingsPileExists = false;
 
-	private int numberOfCategories = 0;
+	private int numberOfSavingsPiles = 0;
 
-	Category createCategory(){
-		atLeastOneCategoryExists = true;
-		Vector3 position = new Vector3 (numberOfCategories * 15, 0, 0);
-		Category category = new Category ("Savings Pile", 1000.0f, 100.0f, categoriesParent, position, Quaternion.identity);
-		numberOfCategories++;
-		return category;
+	Category createSavingsPile(){
+		atLeastOneSavingsPileExists = true;
+		Vector3 position = new Vector3 (numberOfSavingsPiles * 15, 0, 0);
+		SavingsPile savingsPile = new SavingsPile ("Savings Pile", 1000.0f, 100.0f, savingsPilesParent, position, Quaternion.identity);
+		numberOfSavingsPiles++;
+		return savingsPile;
 	}
 
 	/* Key mappings for actions
@@ -31,24 +31,24 @@ public class WorldController : MonoBehaviour {
 	 */
 	void Update () {
 		if (Input.GetKeyDown(KeyCode.C)){
-			mostRecentCategory = createCategory();
+			mostRecentSavingsPile = createSavingsPile();
 		}
 
-		if (atLeastOneCategoryExists) {
+		if (atLeastOneSavingsPileExists) {
 			if (Input.GetKeyDown (KeyCode.Alpha0)) {
-				mostRecentCategory.addMoney (115.0f);
+				mostRecentSavingsPile.addMoney (115.0f);
 			} else if (Input.GetKeyDown (KeyCode.Alpha1)) {
-				mostRecentCategory.addMoney (1.0f);
+				mostRecentSavingsPile.addMoney (1.0f);
 			} else if (Input.GetKeyDown (KeyCode.Alpha2)) {
-				mostRecentCategory.addMoney (10.0f);
+				mostRecentSavingsPile.addMoney (10.0f);
 			} else if (Input.GetKeyDown (KeyCode.Alpha3)) {
-				mostRecentCategory.addMoney (100.0f);
+				mostRecentSavingsPile.addMoney (100.0f);
 			} else if (Input.GetKeyDown (KeyCode.Alpha4)) {
-				mostRecentCategory.addMoney (1000.0f);
+				mostRecentSavingsPile.addMoney (1000.0f);
 			} else if (Input.GetKeyDown (KeyCode.X)) {
-				mostRecentCategory.convertVisualizationUnit ("PS4");
+				mostRecentSavingsPile.convertVisualizationUnit ("PS4");
 			} else if (Input.GetKeyDown (KeyCode.Z)) {
-				mostRecentCategory.convertVisualizationUnit ("Starbucks");
+				mostRecentSavingsPile.convertVisualizationUnit ("Starbucks");
 			}
 		}
 
