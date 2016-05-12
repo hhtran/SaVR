@@ -20,7 +20,7 @@ public class WorldController : MonoBehaviour {
 	}
 
 	Category createGeneralMoneyPile(Vector3 position, Quaternion rotation){
-		generalMoneyPile = new Category ("Free Money", 32827.0f, categoriesParent, position, rotation);
+		generalMoneyPile = new Category ("Free Money", 2827.0f, categoriesParent, position, rotation);
 		return generalMoneyPile;
 	}
 
