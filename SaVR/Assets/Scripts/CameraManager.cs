@@ -14,12 +14,20 @@ public class CameraManager : MonoBehaviour {
 	void Update () {
 		float moveHorizontal = Input.GetAxis ("Horizontal");
 		float moveVertical = Input.GetAxis ("Vertical");
+		Quaternion r = transform.rotation;
+
+		if (Input.GetKey (KeyCode.Comma)) {
+			transform.rotation = new Quaternion(r.x, r.y - 0.01f, r.z, r.w);
+		} else if (Input.GetKey (KeyCode.Period)) {
+			transform.rotation = new Quaternion(r.x, r.y + 0.01f, r.z, r.w);
+		}
 
 		if (moveHorizontal != 0.0) {
-			transform.position = transform.position + new Vector3(moveHorizontal, 0, 0);
+			transform.position = transform.position + transform.right * moveHorizontal;
 		}
 		if (moveVertical != 0.0) {
-			transform.position = transform.position + new Vector3(0, 0, moveVertical);
+			transform.position = transform.position + transform.forward * moveVertical;
 		}
+
 	}
 }
