@@ -45,22 +45,22 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\SteamVR\Editor\SteamVR_Editor.cs" />
-     <Compile Include="Assets\SteamVR\Editor\SteamVR_RenderModelEditor.cs" />
-     <Compile Include="Assets\SteamVR\Editor\SteamVR_Settings.cs" />
-     <Compile Include="Assets\SteamVR\Editor\SteamVR_SkyboxEditor.cs" />
-     <Compile Include="Assets\SteamVR\Editor\SteamVR_Update.cs" />
-     <None Include="Assets\SteamVR\Resources\SteamVR_Fade.shader" />
-     <None Include="Assets\SteamVR\Resources\SteamVR_BlitFlip.shader" />
-     <None Include="Assets\SteamVR\Resources\SteamVR_ClearAll.shader" />
-     <None Include="Assets\SteamVR\Resources\SteamVR_HiddenArea.shader" />
-     <None Include="Assets\SteamVR\Resources\SteamVR_Overlay.shader" />
-     <None Include="Assets\SteamVR\Resources\SteamVR_Blit.shader" />
-     <None Include="Assets\SteamVR\Resources\SteamVR_SphericalProjection.shader" />
-     <None Include="Assets\SteamVR\Resources\SteamVR_AlphaOut.shader" />
-     <None Include="Assets\SteamVR\readme.txt" />
-     <None Include="Assets\Wispy Sky\ReadMe.txt" />
-     <None Include="Assets\SteamVR\Resources\SteamVR_ColorOut.shader" />
+     <Compile Include="Assets\Packages\SteamVR\Editor\SteamVR_Editor.cs" />
+     <Compile Include="Assets\Packages\SteamVR\Editor\SteamVR_RenderModelEditor.cs" />
+     <Compile Include="Assets\Packages\SteamVR\Editor\SteamVR_Settings.cs" />
+     <Compile Include="Assets\Packages\SteamVR\Editor\SteamVR_SkyboxEditor.cs" />
+     <Compile Include="Assets\Packages\SteamVR\Editor\SteamVR_Update.cs" />
+     <None Include="Assets\Packages\SteamVR\Resources\SteamVR_Fade.shader" />
+     <None Include="Assets\Packages\SteamVR\Resources\SteamVR_BlitFlip.shader" />
+     <None Include="Assets\Packages\SteamVR\Resources\SteamVR_ClearAll.shader" />
+     <None Include="Assets\Packages\SteamVR\Resources\SteamVR_HiddenArea.shader" />
+     <None Include="Assets\Packages\SteamVR\Resources\SteamVR_Overlay.shader" />
+     <None Include="Assets\Packages\SteamVR\Resources\SteamVR_Blit.shader" />
+     <None Include="Assets\Packages\SteamVR\Resources\SteamVR_SphericalProjection.shader" />
+     <None Include="Assets\Packages\SteamVR\Resources\SteamVR_AlphaOut.shader" />
+     <None Include="Assets\Packages\SteamVR\readme.txt" />
+     <None Include="Assets\Packages\Wispy Sky\ReadMe.txt" />
+     <None Include="Assets\Packages\SteamVR\Resources\SteamVR_ColorOut.shader" />
  <Reference Include="UnityEngine.Networking">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
  </Reference>

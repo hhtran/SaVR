@@ -218,8 +218,19 @@ namespace AssemblyCSharp
 		}
 
 		public void removeMoney(float amount) {
-			moneyStored -= amount;
+			if (amount > moneyStored) {
+				animateMoneyRemoval (moneyStored);
+				moneyStored = 0;
+			} else {
+				moneyStored -= amount;
+				animateMoneyRemoval (amount);
+			}
+
 			updateAmountLabel ();
+		}
+
+		protected void animateMoneyRemoval(float amount){
+
 		}
 			
 		#endregion
