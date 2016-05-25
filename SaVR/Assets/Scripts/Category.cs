@@ -14,6 +14,7 @@ namespace AssemblyCSharp
 	public class Category : MonoBehaviour
 	{
 		#region String Parameter vars
+		public WorldController wc;
 		protected String categoryName;
 		protected String prefabFolder = "Prefabs/";
 		protected String defaultUnit = "GoldBar";
@@ -214,6 +215,9 @@ namespace AssemblyCSharp
 			}
 
 			moneyStored += amount;
+			if (categoryName != "Points") {
+				wc.addPoints (1.0f);
+			}
 			updateAmountLabel ();
 		}
 

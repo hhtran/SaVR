@@ -9,6 +9,8 @@ public class WorldController : MonoBehaviour {
 	private Category mostRecentSavingsPile;
 	private bool atLeastOneSavingsPileExists = false;
 	private Category generalMoneyPile;
+	private Category pointsPile;
+	public GameObject store;
 
 	private int numberOfSavingsPiles = 0;
 
@@ -16,16 +18,33 @@ public class WorldController : MonoBehaviour {
 		atLeastOneSavingsPileExists = true;
 		SavingsPile savingsPile = new SavingsPile ("Savings Pile", 1000.0f, 100.0f, savingsPilesParent, position, rotation);
 		numberOfSavingsPiles++;
+		savingsPile.wc = this;
 		return savingsPile;
 	}
 
 	Category createGeneralMoneyPile(Vector3 position, Quaternion rotation){
 		generalMoneyPile = new Category ("Free Money", 2827.0f, categoriesParent, position, rotation);
+		generalMoneyPile.wc = this;
 		return generalMoneyPile;
 	}
 
+	Category createPointsPile(Vector3 position, Quaternion rotation){
+		pointsPile = new Category ("Points", 0.0f, categoriesParent, position, rotation);
+
+		return generalMoneyPile;
+	}
+
+	public void addPoints(float numPoints){
+		Store storeScript = store.GetComponent<Store> ();
+		storeScript.points += numPoints;
+		pointsPile.addMoney (numPoints);
+	}
+
 	void Awake(){
-		//createGeneralMoneyPile (new Vector3 (0, 0, 0), Quaternion.identity);
+		createGeneralMoneyPile (new Vector3 (0, 0, 0), Quaternion.identity);
+		createPointsPile (new Vector3 (7, 0, 0), Quaternion.identity);
+		Store storeScript = store.GetComponent<Store> ();
+		storeScript.pointsScript = pointsPile;
 	}
 
 	/* Key mappings for actions

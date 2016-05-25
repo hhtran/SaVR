@@ -28,7 +28,7 @@ namespace AssemblyCSharp
 		//Checks to see if the goal has been completed. Should be called whenever the amount or goal amount is changed
 		private void checkForGoalCompletion(){
 			if (moneyStored >= goalAmount && firstCompletionOfGoal) {
-				GameObject completionAnimation = Instantiate (Resources.Load (prefabFolder + "Goal Complete", typeof(GameObject))) as GameObject;
+				GameObject completionAnimation = Instantiate (Resources.Load (prefabFolder + "Dollar Rain", typeof(GameObject))) as GameObject;
 				completionAnimation.transform.position = categoryParentObj.transform.position + new Vector3(0, 5, 0);
 				firstCompletionOfGoal = false;
 				Debug.Log ("Completed goal");
