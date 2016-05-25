@@ -254,12 +254,21 @@ public class SteamVR_FirstPersonController : MonoBehaviour
         if (canGrabObject != null)
         {
 
-            Debug.Log(controllerAttachJoint);
+            //Debug.Log(controllerAttachJoint);
 
             if (controllerAttachJoint == null && device.GetTouchDown(SteamVR_Controller.ButtonMask.Trigger))
             {
+
                 previousGrabbedObject = canGrabObject;
-                previousGrabbedObject.layer = LayerMask.NameToLayer("Default");
+                if (previousGrabbedObject.layer == LayerMask.NameToLayer("Money"))
+                {
+                    previousGrabbedObject.layer = LayerMask.NameToLayer("GrabbedMoney");
+                }
+                else
+                {
+                    previousGrabbedObject.layer = LayerMask.NameToLayer("Default");
+                }
+
                 SnapCanGrabObjectToController(canGrabObject);
             }
             else if (controllerAttachJoint != null && device.GetTouchUp(SteamVR_Controller.ButtonMask.Trigger))

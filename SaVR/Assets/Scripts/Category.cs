@@ -232,13 +232,27 @@ namespace AssemblyCSharp
 		protected void animateMoneyRemoval(float amount){
 
 		}
-			
-		#endregion
 
+        #endregion
 
+        #region Moving money in and out
 
-		#region	Convert visualization objects
-		public void convertVisualizationUnit(String unit) {
+        void onTriggerExit(Collider other)
+        {
+            Debug.Log("On trigger exit");
+            if (other.gameObject.layer == LayerMask.NameToLayer("Money") || other.gameObject.layer == LayerMask.NameToLayer("GrabbedMoney") )
+            {
+                Debug.Log("Money leaving");
+                Money moneyScript = other.GetComponent<Money>();
+                moneyStored -= moneyScript.value;
+                updateAllTextLabels();
+            }
+        }
+
+        #endregion
+
+        #region	Convert visualization objects
+        public void convertVisualizationUnit(String unit) {
 			unconvertedUnits = 0.0f;
 			currentUnit = unit;
 			destroyMoneyObjects ();

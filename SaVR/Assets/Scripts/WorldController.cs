@@ -25,7 +25,7 @@ public class WorldController : MonoBehaviour {
 	}
 
 	void Awake(){
-		createGeneralMoneyPile (new Vector3 (0, 0, 0), Quaternion.identity);
+		//createGeneralMoneyPile (new Vector3 (0, 0, 0), Quaternion.identity);
 	}
 
 	/* Key mappings for actions
@@ -67,4 +67,12 @@ public class WorldController : MonoBehaviour {
 		}
 
 	}
+
+    // This method provides an attachment point for in-world keypads. Keypads call this method and provide the keys that are being pressed
+    //, and this world controller handles the incoming input accordingly
+    public void receiveKey(string keyValue)
+    {
+        Debug.Log(keyValue);
+
+    }
 }
