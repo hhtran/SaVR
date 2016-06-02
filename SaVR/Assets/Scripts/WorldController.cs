@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using AssemblyCSharp;
 
@@ -84,6 +85,10 @@ public class WorldController : MonoBehaviour {
 				mostRecentSavingsPile.convertVisualizationUnit ("Starbucks");
 			} else if (Input.GetKeyDown (KeyCode.F)) {
 				mostRecentSavingsPile.removeMoney (1000.0f);
+			} else if (Input.GetKeyDown (KeyCode.O)) {
+				SceneManager.LoadScene (0);
+			} else if (Input.GetKeyDown (KeyCode.P)) {
+				SceneManager.LoadScene (1);
 			}
 		}
 
