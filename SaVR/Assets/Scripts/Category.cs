@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
@@ -221,7 +222,7 @@ namespace AssemblyCSharp
 			updateAmountLabel ();
 		}
 
-		public void removeMoney(float amount) {
+		public virtual void removeMoney(float amount) {
 			if (amount > moneyStored) {
 				animateMoneyRemoval (moneyStored);
 				moneyStored = 0;
@@ -231,10 +232,31 @@ namespace AssemblyCSharp
 			}
 
 			updateAmountLabel ();
+
 		}
 
 		protected void animateMoneyRemoval(float amount){
+			var keys_sorted = moneySubObjects.Keys.ToList ();
+			keys_sorted.Sort ();
+			keys_sorted.Reverse ();
 
+			float amountToRemove = amount;
+
+			while (amountToRemove > 0) {
+				foreach (int placeValue in keys_sorted) {
+					if (moneySubObjects [placeValue].ToArray ().Length > 0) {
+						var firstObj = moneySubObjects [placeValue].First ();
+						moneySubObjects [placeValue].RemoveAt (0);
+						GameObject fireAnimation = Instantiate (Resources.Load (prefabFolder + "Fire", typeof(GameObject))) as GameObject;
+						fireAnimation.transform.position = firstObj.transform.position;
+
+						Destroy (firstObj);
+						amountToRemove = amountToRemove - placeValue;
+						break;
+					}
+				}
+			}
+	
 		}
 
         #endregion

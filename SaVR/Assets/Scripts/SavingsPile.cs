@@ -47,6 +47,11 @@ namespace AssemblyCSharp
 			checkForGoalCompletion ();
 		}
 
+		public override void removeMoney(float amount) {
+			base.removeMoney (amount);
+			checkForGoalCompletion ();
+		}
+
 		public void changeGoalAmount (float newGoalAmount) {
 			goalAmount = newGoalAmount;
 			updateGoalLabel ();

@@ -82,6 +82,8 @@ public class WorldController : MonoBehaviour {
 				mostRecentSavingsPile.convertVisualizationUnit ("PS4");
 			} else if (Input.GetKeyDown (KeyCode.Z)) {
 				mostRecentSavingsPile.convertVisualizationUnit ("Starbucks");
+			} else if (Input.GetKeyDown (KeyCode.F)) {
+				mostRecentSavingsPile.removeMoney (1000.0f);
 			}
 		}
 
