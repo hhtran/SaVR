@@ -74,14 +74,7 @@ public class WorldController : MonoBehaviour {
 			generalMoneyPile.convertVisualizationUnit ("PS4");
 		}
 
-        leftTrackedController = leftController.GetComponent<SteamVR_TrackedObject>();
-        rightTrackedController = rightController.GetComponent<SteamVR_TrackedObject>();
-        leftControllerDevice = SteamVR_Controller.Input((int)leftTrackedController.index);
-        rightControllerDevice = SteamVR_Controller.Input((int)rightTrackedController.index);
-
-        if (leftControllerDevice.GetPressDown(SteamVR_Controller.ButtonMask.Touchpad) || rightControllerDevice.GetPressDown(SteamVR_Controller.ButtonMask.Touchpad)){
-            Debug.Log("Joyustisjoiawefj;awjioefio;j;awefi");
-        }
+        updateMotionControllerInput();
 
 		if (atLeastOneSavingsPileExists) {
 			if (Input.GetKeyDown (KeyCode.Alpha0)) {
@@ -104,6 +97,24 @@ public class WorldController : MonoBehaviour {
 		}
 
 	}
+
+    private void updateMotionControllerInput()
+    {
+        leftTrackedController = leftController.GetComponent<SteamVR_TrackedObject>();
+        rightTrackedController = rightController.GetComponent<SteamVR_TrackedObject>();
+        leftControllerDevice = SteamVR_Controller.Input((int)leftTrackedController.index);
+        rightControllerDevice = SteamVR_Controller.Input((int)rightTrackedController.index);
+
+        if (leftControllerDevice.GetPressDown(SteamVR_Controller.ButtonMask.Touchpad) || rightControllerDevice.GetPressDown(SteamVR_Controller.ButtonMask.Touchpad))
+        {
+            Debug.Log("Joyustisjoiawefj;awjioefio;j;awefi");
+        }
+        if (leftControllerDevice.GetPressDown(SteamVR_Controller.ButtonMask.ApplicationMenu) || rightControllerDevice.GetPressDown(SteamVR_Controller.ButtonMask.ApplicationMenu))
+        {
+            Debug.Log("Menu button pressed");
+        }
+
+    }
 
     // This method provides an attachment point for in-world keypads. Keypads call this method and provide the keys that are being pressed
     //, and this world controller handles the incoming input accordingly
