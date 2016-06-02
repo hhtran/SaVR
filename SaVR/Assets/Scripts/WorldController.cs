@@ -4,6 +4,9 @@ using AssemblyCSharp;
 
 public class WorldController : MonoBehaviour {
 
+    public GameObject gameMenu;
+    public GameObject headMountedDisplay;
+
 	public GameObject savingsPilesParent;
 	public GameObject categoriesParent;
 	private Category mostRecentSavingsPile;
@@ -111,16 +114,38 @@ public class WorldController : MonoBehaviour {
         }
         if (leftControllerDevice.GetPressDown(SteamVR_Controller.ButtonMask.ApplicationMenu) || rightControllerDevice.GetPressDown(SteamVR_Controller.ButtonMask.ApplicationMenu))
         {
-            Debug.Log("Menu button pressed");
+            motionControllerMenuButtonPressed();
         }
 
+    }
+
+    private void motionControllerMenuButtonPressed()
+    {
+        if (gameMenu.activeSelf)
+        {
+            gameMenu.SetActive(false);
+        } else
+        {
+            gameMenu.transform.position = headMountedDisplay.transform.position;
+            Vector3 forward = headMountedDisplay.transform.forward;
+            forward.Scale(new Vector3(0.8f, 0.8f, 0.8f));
+            gameMenu.transform.position += forward  + new Vector3(0, 0.8f, 0);
+            gameMenu.SetActive(true);
+        }
     }
 
     // This method provides an attachment point for in-world keypads. Keypads call this method and provide the keys that are being pressed
     //, and this world controller handles the incoming input accordingly
     public void receiveKey(string keyValue)
     {
-        Debug.Log(keyValue);
+       switch (keyValue)
+        {
+            case "newSavings":
+                mostRecentSavingsPile = createSavingsPile(new Vector3((numberOfSavingsPiles + 1) * 15, 0, 0), Quaternion.identity);
+                break;
+            default:
+                break;
+        }
 
     }
 }
