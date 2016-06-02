@@ -11,8 +11,15 @@ public class WorldController : MonoBehaviour {
 	private Category generalMoneyPile;
 	private Category pointsPile;
 	public GameObject store;
+    public GameObject leftController;
+    public GameObject rightController;
+    private SteamVR_Controller.Device leftControllerDevice;
+    private SteamVR_Controller.Device rightControllerDevice;
+    private SteamVR_TrackedObject leftTrackedController;
+    private SteamVR_TrackedObject rightTrackedController;
 
-	private int numberOfSavingsPiles = 0;
+
+    private int numberOfSavingsPiles = 0;
 
 	SavingsPile createSavingsPile(Vector3 position, Quaternion rotation){
 		atLeastOneSavingsPileExists = true;
@@ -66,6 +73,15 @@ public class WorldController : MonoBehaviour {
 		} else if (Input.GetKeyDown (KeyCode.B)) {
 			generalMoneyPile.convertVisualizationUnit ("PS4");
 		}
+
+        leftTrackedController = leftController.GetComponent<SteamVR_TrackedObject>();
+        rightTrackedController = rightController.GetComponent<SteamVR_TrackedObject>();
+        leftControllerDevice = SteamVR_Controller.Input((int)leftTrackedController.index);
+        rightControllerDevice = SteamVR_Controller.Input((int)rightTrackedController.index);
+
+        if (leftControllerDevice.GetPressDown(SteamVR_Controller.ButtonMask.Touchpad) || rightControllerDevice.GetPressDown(SteamVR_Controller.ButtonMask.Touchpad)){
+            Debug.Log("Joyustisjoiawefj;awjioefio;j;awefi");
+        }
 
 		if (atLeastOneSavingsPileExists) {
 			if (Input.GetKeyDown (KeyCode.Alpha0)) {
