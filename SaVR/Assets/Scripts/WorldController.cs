@@ -4,6 +4,9 @@ using AssemblyCSharp;
 
 public class WorldController : MonoBehaviour {
 
+    public GameObject gameMenu;
+    public GameObject headMountedDisplay;
+
 	public GameObject savingsPilesParent;
 	public GameObject categoriesParent;
 	private Category mostRecentSavingsPile;
@@ -11,8 +14,15 @@ public class WorldController : MonoBehaviour {
 	private Category generalMoneyPile;
 	private Category pointsPile;
 	public GameObject store;
+    public GameObject leftController;
+    public GameObject rightController;
+    private SteamVR_Controller.Device leftControllerDevice;
+    private SteamVR_Controller.Device rightControllerDevice;
+    private SteamVR_TrackedObject leftTrackedController;
+    private SteamVR_TrackedObject rightTrackedController;
 
-	private int numberOfSavingsPiles = 0;
+
+    private int numberOfSavingsPiles = 0;
 
 	SavingsPile createSavingsPile(Vector3 position, Quaternion rotation){
 		atLeastOneSavingsPileExists = true;
@@ -67,6 +77,8 @@ public class WorldController : MonoBehaviour {
 			generalMoneyPile.convertVisualizationUnit ("PS4");
 		}
 
+        updateMotionControllerInput();
+
 		if (atLeastOneSavingsPileExists) {
 			if (Input.GetKeyDown (KeyCode.Alpha0)) {
 				mostRecentSavingsPile.addMoney (115.0f);
@@ -89,11 +101,51 @@ public class WorldController : MonoBehaviour {
 
 	}
 
+    private void updateMotionControllerInput()
+    {
+        leftTrackedController = leftController.GetComponent<SteamVR_TrackedObject>();
+        rightTrackedController = rightController.GetComponent<SteamVR_TrackedObject>();
+        leftControllerDevice = SteamVR_Controller.Input((int)leftTrackedController.index);
+        rightControllerDevice = SteamVR_Controller.Input((int)rightTrackedController.index);
+
+        if (leftControllerDevice.GetPressDown(SteamVR_Controller.ButtonMask.Touchpad) || rightControllerDevice.GetPressDown(SteamVR_Controller.ButtonMask.Touchpad))
+        {
+            Debug.Log("Joyustisjoiawefj;awjioefio;j;awefi");
+        }
+        if (leftControllerDevice.GetPressDown(SteamVR_Controller.ButtonMask.ApplicationMenu) || rightControllerDevice.GetPressDown(SteamVR_Controller.ButtonMask.ApplicationMenu))
+        {
+            motionControllerMenuButtonPressed();
+        }
+
+    }
+
+    private void motionControllerMenuButtonPressed()
+    {
+        if (gameMenu.activeSelf)
+        {
+            gameMenu.SetActive(false);
+        } else
+        {
+            gameMenu.transform.position = headMountedDisplay.transform.position;
+            Vector3 forward = headMountedDisplay.transform.forward;
+            forward.Scale(new Vector3(0.8f, 0.8f, 0.8f));
+            gameMenu.transform.position += forward  + new Vector3(0, 0.8f, 0);
+            gameMenu.SetActive(true);
+        }
+    }
+
     // This method provides an attachment point for in-world keypads. Keypads call this method and provide the keys that are being pressed
     //, and this world controller handles the incoming input accordingly
     public void receiveKey(string keyValue)
     {
-        Debug.Log(keyValue);
+       switch (keyValue)
+        {
+            case "newSavings":
+                mostRecentSavingsPile = createSavingsPile(new Vector3((numberOfSavingsPiles + 1) * 15, 0, 0), Quaternion.identity);
+                break;
+            default:
+                break;
+        }
 
     }
 }
