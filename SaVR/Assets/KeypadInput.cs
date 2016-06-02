@@ -18,21 +18,18 @@ public class KeypadInput : MonoBehaviour {
 
     }
 
+    public void receiveInput(string input)
+    {
+        wc.receiveKey(input);
+        
+    }
+
     // Update is called once per frame
     void Update() {
         
     }
 
-    void OnTriggerEnter(Collider other)
-    {
-        GameObject collidingObject = other.gameObject;
-        if (collidingObject.CompareTag("Key"))
-        {
-            KeypadKey kk = collidingObject.GetComponent<KeypadKey>();
-            string keyValue = kk.keyvalue;
-            wc.receiveKey(keyValue);
-        }
-    }
+
 
 
 }
