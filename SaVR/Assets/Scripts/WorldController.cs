@@ -7,13 +7,13 @@ public class WorldController : MonoBehaviour {
     public GameObject gameMenu;
     public GameObject headMountedDisplay;
 
-	public GameObject savingsPilesParent;
-	public GameObject categoriesParent;
-	private Category mostRecentSavingsPile;
-	private bool atLeastOneSavingsPileExists = false;
-	private Category generalMoneyPile;
-	private Category pointsPile;
-	public GameObject store;
+    public GameObject savingsPilesParent;
+    public GameObject categoriesParent;
+    private Category mostRecentSavingsPile;
+    private bool atLeastOneSavingsPileExists = false;
+    private Category generalMoneyPile;
+    private Category pointsPile;
+    public GameObject store;
     public GameObject leftController;
     public GameObject rightController;
     private SteamVR_Controller.Device leftControllerDevice;
@@ -24,40 +24,40 @@ public class WorldController : MonoBehaviour {
 
     private int numberOfSavingsPiles = 0;
 
-	SavingsPile createSavingsPile(Vector3 position, Quaternion rotation){
-		atLeastOneSavingsPileExists = true;
-		SavingsPile savingsPile = new SavingsPile ("Savings Pile", 1000.0f, 100.0f, savingsPilesParent, position, rotation);
-		numberOfSavingsPiles++;
-		savingsPile.wc = this;
-		return savingsPile;
-	}
+    SavingsPile createSavingsPile(Vector3 position, Quaternion rotation) {
+        atLeastOneSavingsPileExists = true;
+        SavingsPile savingsPile = new SavingsPile("Savings Pile", 1000.0f, 100.0f, savingsPilesParent, position, rotation);
+        numberOfSavingsPiles++;
+        savingsPile.wc = this;
+        return savingsPile;
+    }
 
-	Category createGeneralMoneyPile(Vector3 position, Quaternion rotation){
-		generalMoneyPile = new Category ("Free Money", 2827.0f, categoriesParent, position, rotation);
-		generalMoneyPile.wc = this;
-		return generalMoneyPile;
-	}
+    Category createGeneralMoneyPile(Vector3 position, Quaternion rotation) {
+        generalMoneyPile = new Category("Free Money", 2827.0f, categoriesParent, position, rotation);
+        generalMoneyPile.wc = this;
+        return generalMoneyPile;
+    }
 
-	Category createPointsPile(Vector3 position, Quaternion rotation){
-		pointsPile = new Category ("Points", 0.0f, categoriesParent, position, rotation);
+    Category createPointsPile(Vector3 position, Quaternion rotation) {
+        pointsPile = new Category("Points", 0.0f, categoriesParent, position, rotation);
 
-		return generalMoneyPile;
-	}
+        return generalMoneyPile;
+    }
 
-	public void addPoints(float numPoints){
-		Store storeScript = store.GetComponent<Store> ();
-		storeScript.points += numPoints;
-		pointsPile.addMoney (numPoints);
-	}
+    public void addPoints(float numPoints) {
+        Store storeScript = store.GetComponent<Store>();
+        storeScript.points += numPoints;
+        pointsPile.addMoney(numPoints);
+    }
 
-	void Awake(){
-		createGeneralMoneyPile (new Vector3 (0, 0, 0), Quaternion.identity);
-		createPointsPile (new Vector3 (7, 0, 0), Quaternion.identity);
-		Store storeScript = store.GetComponent<Store> ();
-		storeScript.pointsScript = pointsPile;
-	}
+    void Awake() {
+        createGeneralMoneyPile(new Vector3(0, 0, 0), Quaternion.identity);
+        createPointsPile(new Vector3(7, 0, 0), Quaternion.identity);
+        Store storeScript = store.GetComponent<Store>();
+        storeScript.pointsScript = pointsPile;
+    }
 
-	/* Key mappings for actions
+    /* Key mappings for actions
 	 * WASD or arrow keys: Move the camera around
 	 * C: Add a new category/savings pile
 	 * X: Convert the money in the most recently created category into PS4 units
@@ -68,40 +68,15 @@ public class WorldController : MonoBehaviour {
 	 * 3: Add 100 to the most recently created category
 	 * 4: Add 1000 to the most recently created category
 	 */
-	void Update () {
-		if (Input.GetKeyDown(KeyCode.C)){
-			mostRecentSavingsPile = createSavingsPile(new Vector3((numberOfSavingsPiles + 1) * 15, 0, 0), Quaternion.identity);
-		} else if (Input.GetKeyDown (KeyCode.V)) {
-			generalMoneyPile.convertVisualizationUnit ("Starbucks");
-		} else if (Input.GetKeyDown (KeyCode.B)) {
-			generalMoneyPile.convertVisualizationUnit ("PS4");
-		}
 
-        updateMotionControllerInput();
+    // Keeps track of inputs coming in from the real world. In-game input (like from menus and such) are handled within the respondToInGameInput method
+    void Update() {
+        respondToKeyboardInputs();
+        respondToMotionControllerInput();
 
-		if (atLeastOneSavingsPileExists) {
-			if (Input.GetKeyDown (KeyCode.Alpha0)) {
-				mostRecentSavingsPile.addMoney (115.0f);
-			} else if (Input.GetKeyDown (KeyCode.Alpha1)) {
-				mostRecentSavingsPile.addMoney (1.0f);
-			} else if (Input.GetKeyDown (KeyCode.Alpha2)) {
-				mostRecentSavingsPile.addMoney (10.0f);
-			} else if (Input.GetKeyDown (KeyCode.Alpha3)) {
-				mostRecentSavingsPile.addMoney (100.0f);
-			} else if (Input.GetKeyDown (KeyCode.Alpha4)) {
-				mostRecentSavingsPile.addMoney (1000.0f);
-			} else if (Input.GetKeyDown (KeyCode.X)) {
-				mostRecentSavingsPile.convertVisualizationUnit ("PS4");
-			} else if (Input.GetKeyDown (KeyCode.Z)) {
-				mostRecentSavingsPile.convertVisualizationUnit ("Starbucks");
-			} else if (Input.GetKeyDown (KeyCode.F)) {
-				mostRecentSavingsPile.removeMoney (1000.0f);
-			}
-		}
+    }
 
-	}
-
-    private void updateMotionControllerInput()
+    private void respondToMotionControllerInput()
     {
         leftTrackedController = leftController.GetComponent<SteamVR_TrackedObject>();
         rightTrackedController = rightController.GetComponent<SteamVR_TrackedObject>();
@@ -126,11 +101,92 @@ public class WorldController : MonoBehaviour {
             gameMenu.SetActive(false);
         } else
         {
-            gameMenu.transform.position = headMountedDisplay.transform.position;
-            Vector3 forward = headMountedDisplay.transform.forward;
-            forward.Scale(new Vector3(0.8f, 0.8f, 0.8f));
-            gameMenu.transform.position += forward  + new Vector3(0, 0.8f, 0);
+            setMenuPositionInFrontOfCamera(headMountedDisplay, gameMenu);
             gameMenu.SetActive(true);
+        }
+    }
+
+    private void setMenuPositionInFrontOfCamera(GameObject camera, GameObject menu)
+    {
+        gameMenu.transform.position = camera.transform.position;
+
+        // Get the forward direction unit vector, but without the y component
+        Vector3 forward = camera.transform.forward;
+        forward.Scale(new Vector3(1f, 0f, 1f));
+        forward.Normalize();
+        forward.Scale(new Vector3(0.8f, 0.8f, 0.8f));
+
+        gameMenu.transform.position += new Vector3(forward.x, -0.3f, forward.z);
+        Quaternion rotation = Quaternion.LookRotation(forward);
+        Quaternion gameMenuRotation = gameMenu.transform.rotation;
+        gameMenu.transform.rotation = rotation;
+    }
+
+    private void respondToKeyboardInputs()
+    {
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            mostRecentSavingsPile = createSavingsPile(new Vector3((numberOfSavingsPiles + 1) * 15, 0, 0), Quaternion.identity);
+        }
+        else if (Input.GetKeyDown(KeyCode.V))
+        {
+            generalMoneyPile.convertVisualizationUnit("Starbucks");
+        }
+        else if (Input.GetKeyDown(KeyCode.B))
+        {
+            generalMoneyPile.convertVisualizationUnit("PS4");
+        }
+
+        if (atLeastOneSavingsPileExists)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha0))
+            {
+                mostRecentSavingsPile.addMoney(115.0f);
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                mostRecentSavingsPile.addMoney(1.0f);
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                mostRecentSavingsPile.addMoney(10.0f);
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                mostRecentSavingsPile.addMoney(100.0f);
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha4))
+            {
+                mostRecentSavingsPile.addMoney(1000.0f);
+            }
+            else if (Input.GetKeyDown(KeyCode.X))
+            {
+                mostRecentSavingsPile.convertVisualizationUnit("PS4");
+            }
+            else if (Input.GetKeyDown(KeyCode.Z))
+            {
+                mostRecentSavingsPile.convertVisualizationUnit("Starbucks");
+            }
+            else if (Input.GetKeyDown(KeyCode.F))
+            {
+                mostRecentSavingsPile.removeMoney(1000.0f);
+            }
+        }
+    }
+
+    private void respondToInGameInput(string input)
+    {
+        switch (input)
+        {
+            case "newSavings":
+                mostRecentSavingsPile = createSavingsPile(new Vector3((numberOfSavingsPiles + 1) * 15, 0, 0), Quaternion.identity);
+                break;
+            case "convert":
+                break;
+            case "shop":
+                break;
+            default:
+                break;
         }
     }
 
@@ -138,14 +194,7 @@ public class WorldController : MonoBehaviour {
     //, and this world controller handles the incoming input accordingly
     public void receiveKey(string keyValue)
     {
-       switch (keyValue)
-        {
-            case "newSavings":
-                mostRecentSavingsPile = createSavingsPile(new Vector3((numberOfSavingsPiles + 1) * 15, 0, 0), Quaternion.identity);
-                break;
-            default:
-                break;
-        }
+        respondToInGameInput(keyValue);
 
     }
 }
