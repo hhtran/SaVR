@@ -234,7 +234,16 @@ public class WorldController : MonoBehaviour {
 				break;
 			case "convert-gold":
 				break;
-			default:
+		case "shop-helicopter":
+			Debug.Log ("Shop heli");
+			break;
+		case "shop-car":
+			Debug.Log ("Shop car");
+			break;
+		case "shop-something":
+			Debug.Log ("Shop something");
+			break;
+		default:
                 break;
         }
     }

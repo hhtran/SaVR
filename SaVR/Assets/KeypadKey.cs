@@ -28,8 +28,14 @@ namespace AssemblyCSharp
 
         void changeKeyColor(Color color)
         {
-            Material mat = GetComponent<MeshRenderer>().material;
-            mat.color = color;
+			foreach(Transform child in gameObject.transform) {
+				GameObject childObject = child.gameObject;
+				if (child.name == "Key Shape") {
+					Material mat = childObject.GetComponent<MeshRenderer>().material;
+					mat.color = color;
+				}
+			}
+
         }
 
         void OnInspectorGUI()
