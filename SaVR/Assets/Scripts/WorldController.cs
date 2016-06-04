@@ -96,6 +96,7 @@ public class WorldController : MonoBehaviour {
 
     private void motionControllerMenuButtonPressed()
     {
+        Debug.Log("Menu button pressed");
         if (gameMenu.activeSelf)
         {
             gameMenu.SetActive(false);
