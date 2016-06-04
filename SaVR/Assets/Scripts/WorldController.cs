@@ -226,7 +226,15 @@ public class WorldController : MonoBehaviour {
                 break;
             case "shop":
                 break;
-            default:
+			case "convert-ps4":
+				mostRecentSavingsPile.convertVisualizationUnit("PS4");
+				break;
+			case "convert-starbucks":
+				mostRecentSavingsPile.convertVisualizationUnit("Starbucks");
+				break;
+			case "convert-gold":
+				break;
+			default:
                 break;
         }
     }

@@ -22,6 +22,12 @@ public class CameraManager : MonoBehaviour {
 			transform.rotation = new Quaternion(r.x, r.y + 0.01f, r.z, r.w);
 		}
 
+		if (Input.GetKey (KeyCode.K)) {
+			transform.position += new Vector3 (0f, 0.1f, 0f);
+		} else if (Input.GetKey (KeyCode.L)) {
+			transform.position += new Vector3 (0f, -0.1f, 0f);
+
+		}
 		if (moveHorizontal != 0.0) {
 			transform.position = transform.position + transform.right * moveHorizontal;
 		}
