@@ -1,11 +1,14 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 using AssemblyCSharp;
 
 public class WorldController : MonoBehaviour {
 
     public GameObject gameMenu;
+    public GameObject convertMenu;
     public GameObject headMountedDisplay;
+
+    private List<GameObject> menuPath = new List<GameObject>();
 
     public GameObject savingsPilesParent;
     public GameObject categoriesParent;
@@ -97,19 +100,51 @@ public class WorldController : MonoBehaviour {
     private void motionControllerMenuButtonPressed()
     {
         Debug.Log("Menu button pressed");
-        if (gameMenu.activeSelf)
+        if (menuPath.Count > 0)
         {
-            gameMenu.SetActive(false);
-        } else
-        {
-            setMenuPositionInFrontOfCamera(headMountedDisplay, gameMenu);
-            gameMenu.SetActive(true);
+            hideMenu(menuPath[menuPath.Count - 1]);
+            menuPath.Clear();
         }
+        else
+        {
+            showMenu(gameMenu);
+            menuPath.Add(gameMenu);
+        }
+    }
+
+    private void showMenu(GameObject menu)
+    {
+        setMenuPositionInFrontOfCamera(headMountedDisplay, menu);
+        menu.SetActive(true);
+    }
+
+    private void hideMenu(GameObject menu)
+    {
+        menu.SetActive(false);
+    }
+
+
+    //Menu given is the current menu
+    private void goBackToPreviousMenu()
+    {
+        if (menuPath.Count <= 1) return;
+
+        hideMenu(menuPath[menuPath.Count - 1]);
+        menuPath.RemoveAt(menuPath.Count - 1);
+        showMenu(menuPath[menuPath.Count - 1]);
+
+    }
+
+    private void goToNextMenu(GameObject menu)
+    {
+        hideMenu(menuPath[menuPath.Count - 1]);
+        showMenu(menu);
+        menuPath.Add(menu);
     }
 
     private void setMenuPositionInFrontOfCamera(GameObject camera, GameObject menu)
     {
-        gameMenu.transform.position = camera.transform.position;
+        menu.transform.position = camera.transform.position;
 
         // Get the forward direction unit vector, but without the y component
         Vector3 forward = camera.transform.forward;
@@ -117,10 +152,10 @@ public class WorldController : MonoBehaviour {
         forward.Normalize();
         forward.Scale(new Vector3(0.8f, 0.8f, 0.8f));
 
-        gameMenu.transform.position += new Vector3(forward.x, -0.3f, forward.z);
+        menu.transform.position += new Vector3(forward.x, -0.3f, forward.z);
         Quaternion rotation = Quaternion.LookRotation(forward);
-        Quaternion gameMenuRotation = gameMenu.transform.rotation;
-        gameMenu.transform.rotation = rotation;
+        Quaternion menuRotation = menu.transform.rotation;
+        menu.transform.rotation = rotation;
     }
 
     private void respondToKeyboardInputs()
@@ -179,10 +214,15 @@ public class WorldController : MonoBehaviour {
     {
         switch (input)
         {
+            case "back":
+                goBackToPreviousMenu();
+                break;
             case "newSavings":
                 mostRecentSavingsPile = createSavingsPile(new Vector3((numberOfSavingsPiles + 1) * 15, 0, 0), Quaternion.identity);
                 break;
             case "convert":
+                Debug.Log("Convert menu pressed");
+                goToNextMenu(convertMenu);
                 break;
             case "shop":
                 break;
