@@ -38,6 +38,11 @@ namespace AssemblyCSharp
             tm.text = keytext;
         }
 
+        void OnDisable()
+        {
+            changeKeyColor(unpressedColor);
+        }
+
         void OnTriggerEnter(Collider other)
         {
             KeypadInput keypadInput = keypad.GetComponent<KeypadInput>() as KeypadInput;
