@@ -49,7 +49,6 @@ public class WorldController : MonoBehaviour {
 
     public void addPoints(float numPoints) {
         Store storeScript = store.GetComponent<Store>();
-        storeScript.points += numPoints;
         pointsPile.addMoney(numPoints);
     }
 
