@@ -136,8 +136,10 @@ public class WorldController : MonoBehaviour {
 
     private void goToNextMenu(GameObject menu)
     {
-        hideMenu(menuPath[menuPath.Count - 1]);
-        showMenu(menu);
+		if (menuPath.Count > 0) {		
+			hideMenu (menuPath [menuPath.Count - 1]);
+		}
+		showMenu(menu);
         menuPath.Add(menu);
     }
 
@@ -216,6 +218,9 @@ public class WorldController : MonoBehaviour {
             case "back":
                 goBackToPreviousMenu();
                 break;
+			case "changeWorld":
+				Debug.Log ("Change world button pressed");
+				break;
             case "newSavings":
                 mostRecentSavingsPile = createSavingsPile(new Vector3((numberOfSavingsPiles + 1) * 15, 0, 0), Quaternion.identity);
                 break;
@@ -233,20 +238,20 @@ public class WorldController : MonoBehaviour {
 				break;
 			case "convert-gold":
 				break;
-		case "shop-helicopter":
-			Debug.Log ("Shop heli");
-			storeScript.buy ("helicopter");
-			break;
-		case "shop-car":
-			Debug.Log ("Shop car");
-			storeScript.buy ("car");
-			break;
-		case "shop-boat":
-			Debug.Log ("Shop boat");
-			storeScript.buy ("boat");
-			break;
-		default:
-                break;
+			case "shop-helicopter":
+				Debug.Log ("Shop heli");
+				storeScript.buy ("helicopter");
+				break;
+			case "shop-car":
+				Debug.Log ("Shop car");
+				storeScript.buy ("car");
+				break;
+			case "shop-boat":
+				Debug.Log ("Shop boat");
+				storeScript.buy ("boat");
+				break;
+			default:
+	                break;
         }
     }
 
