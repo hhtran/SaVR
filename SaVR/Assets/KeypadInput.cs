@@ -21,6 +21,7 @@ public class KeypadInput : MonoBehaviour {
     public void receiveInput(string input)
     {
         wc.receiveKey(input);
+		Debug.Log ("Keypad Input received key: " + input);
         
     }
 

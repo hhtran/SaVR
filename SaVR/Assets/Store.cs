@@ -7,11 +7,6 @@ namespace AssemblyCSharp {
 
 public class Store : MonoBehaviour {
 
-	public GameObject pointsPile;
-	public Category pointsScript;
-	protected string prefabFolder = "Prefabs/";
-		public List<Item> itemsForSale = new List<Item> { new Item ("Helicopter", 10000.0f, "Images/helicopter", "helicopter"), new Item ("Car", 1000.0f, "Images/car", "car"), new Item ("Boat", 900.0f, "Images/boat", "boat") };
-
 	public struct Item
 	{
 		public string name;
@@ -26,18 +21,35 @@ public class Store : MonoBehaviour {
 			this.prefabPath = prefabPath;
 		}
 	}
+
+	public GameObject pointsPile;
+	public Category pointsScript;
+	protected string prefabFolder = "Prefabs/";
+
+	private static Item helicopter = new Item("helicopter", 10000.0f, "Images/helicopter", "helicopter");
+	private static Item car = new Item("car", 1000.0f, "Images/car", "car");
+	private static Item boat = new Item("boat", 900.0f, "Images/boat", "boat");
+	public Dictionary<string, Item> itemsForSale = new Dictionary<string, Item> () {
+		{"helicopter", helicopter },
+		{"car", car},
+		{"boat", boat}
+	};
+
+
 			
 	// Use this for initialization
 	void Start () {
 				
 	}
 
-	void buy(Item item){
-		if (pointsScript.getMoneyStored () < item.price)
+	public void buy(string itemName){
+		Item itemBeingBought = itemsForSale [itemName];
+
+		if (pointsScript.getMoneyStored () < itemBeingBought.price)
 			return;
 
-		Instantiate (Resources.Load (prefabFolder + item.prefabPath), new Vector3 (0f, 1f, 0f), Quaternion.identity);
-		pointsScript.removeMoney (item.price);
+		Instantiate (Resources.Load (prefabFolder + itemBeingBought.prefabPath), new Vector3 (0f, 1f, 0f), Quaternion.identity);
+		pointsScript.removeMoney (itemBeingBought.price);
 	}
 	
 	// Update is called once per frame

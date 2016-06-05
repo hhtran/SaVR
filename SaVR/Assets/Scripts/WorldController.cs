@@ -17,6 +17,7 @@ public class WorldController : MonoBehaviour {
     private Category generalMoneyPile;
     private Category pointsPile;
     public GameObject store;
+	private Store storeScript;
     public GameObject leftController;
     public GameObject rightController;
     private SteamVR_Controller.Device leftControllerDevice;
@@ -48,14 +49,13 @@ public class WorldController : MonoBehaviour {
     }
 
     public void addPoints(float numPoints) {
-        Store storeScript = store.GetComponent<Store>();
         pointsPile.addMoney(numPoints);
     }
 
     void Awake() {
         createGeneralMoneyPile(new Vector3(0, 0, 0), Quaternion.identity);
         createPointsPile(new Vector3(7, 0, 0), Quaternion.identity);
-        Store storeScript = store.GetComponent<Store>();
+        storeScript = store.GetComponent<Store>();
         storeScript.pointsScript = pointsPile;
     }
 
@@ -235,12 +235,15 @@ public class WorldController : MonoBehaviour {
 				break;
 		case "shop-helicopter":
 			Debug.Log ("Shop heli");
+			storeScript.buy ("helicopter");
 			break;
 		case "shop-car":
 			Debug.Log ("Shop car");
+			storeScript.buy ("car");
 			break;
-		case "shop-something":
-			Debug.Log ("Shop something");
+		case "shop-boat":
+			Debug.Log ("Shop boat");
+			storeScript.buy ("boat");
 			break;
 		default:
                 break;

@@ -217,7 +217,7 @@ namespace AssemblyCSharp
 
 			moneyStored += amount;
 			if (categoryName != "Points") {
-				wc.addPoints (1.0f);
+				wc.addPoints (100.0f);
 			}
 			updateAmountLabel ();
 		}

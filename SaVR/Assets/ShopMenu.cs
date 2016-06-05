@@ -8,25 +8,31 @@ public class ShopMenu : MonoBehaviour {
 
 	public Store store;
 	public List<GameObject> storeOptionKeys;
+	public GameObject pointsLabel;
 
 	// Use this for initialization
 	void Start () {
+		Dictionary<string, Store.Item>.ValueCollection itemsForSale = store.itemsForSale.Values;
+		Dictionary<string, Store.Item>.ValueCollection.Enumerator enu = itemsForSale.GetEnumerator ();
 		for (int i = 0; i < storeOptionKeys.Count; i++) {
 			SpriteRenderer spriteRenderer = storeOptionKeys [i].GetComponentsInChildren<SpriteRenderer>()[0];
-			Store.Item itemToLoad = store.itemsForSale [i];
+			enu.MoveNext ();
+			Store.Item itemToLoad = enu.Current;
 
 			KeypadKey keyScript = storeOptionKeys [i].GetComponent<KeypadKey> ();
 			keyScript.keytext = itemToLoad.price.ToString();
-			keyScript.keyvalue = itemToLoad.name;
+			keyScript.keyvalue = "shop-" + itemToLoad.name;
 			
 			Sprite itemSprite = Resources.Load(itemToLoad.imagePath, typeof(Sprite)) as Sprite;
 			spriteRenderer.sprite = itemSprite;
 		}
 	}
-	
+				
 	// Update is called once per frame
 	void Update () {
-		
+			TextMesh pointsLabelTextMesh = pointsLabel.GetComponent<TextMesh>();
+			float pointsAvailable = store.pointsScript.getMoneyStored ();
+			pointsLabelTextMesh.text = "Points Available: " + pointsAvailable.ToString();
 	}
 }
 
