@@ -25,9 +25,9 @@ public class Store : MonoBehaviour {
 	public Category pointsScript;
 	protected string prefabFolder = "Prefabs/";
 
-	private static Item jet = new Item("jet", 2000.0f, "Images/jet", "jet");
-	private static Item car = new Item("car", 1000.0f, "Images/car", "car");
-	private static Item boat = new Item("boat", 900.0f, "Images/boat", "boat");
+	private static Item jet = new Item("jet", 100.0f, "Images/jet", "jet");
+	private static Item car = new Item("car", 50.0f, "Images/car", "car");
+	private static Item boat = new Item("boat", 40.0f, "Images/boat", "boat");
 	public Dictionary<string, Item> itemsForSale = new Dictionary<string, Item> () {
 		{"jet", jet },
 		{"car", car},

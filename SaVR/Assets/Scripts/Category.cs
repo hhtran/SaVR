@@ -183,8 +183,8 @@ namespace AssemblyCSharp
 			GameObject prefabForPlaceValue = getPrefabForPlaceValue (placeValue, unit);
 
 			for (int i = 0; i < numberOfObjs; i++) {
-				Vector3 moneyObjPosition = moneyObjectParentObj.transform.position;
-				moneyObjPosition.y += i + 5;
+				Vector3 moneyObjPosition = moneyObjectParentObj.transform.position + new Vector3(0, 5f, 0);
+				moneyObjPosition.y += i * 5;
 				GameObject moneyPrefabInstance = Instantiate (prefabForPlaceValue, moneyObjPosition, Quaternion.identity) as GameObject;
 				moneyPrefabInstance.transform.SetParent (moneyObjectParentObj.transform);
 
@@ -226,7 +226,7 @@ namespace AssemblyCSharp
 
 			moneyStored += amount;
 			if (categoryName != "Points") {
-				wc.addPoints (100.0f);
+				wc.addPoints (5.0f);
 			}
 			updateAmountLabel ();
 		}
