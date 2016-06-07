@@ -25,11 +25,11 @@ public class Store : MonoBehaviour {
 	public Category pointsScript;
 	protected string prefabFolder = "Prefabs/";
 
-	private static Item helicopter = new Item("helicopter", 10000.0f, "Images/helicopter", "helicopter");
+	private static Item jet = new Item("jet", 2000.0f, "Images/jet", "jet");
 	private static Item car = new Item("car", 1000.0f, "Images/car", "car");
 	private static Item boat = new Item("boat", 900.0f, "Images/boat", "boat");
 	public Dictionary<string, Item> itemsForSale = new Dictionary<string, Item> () {
-		{"helicopter", helicopter },
+		{"jet", jet },
 		{"car", car},
 		{"boat", boat}
 	};

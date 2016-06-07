@@ -42,7 +42,7 @@ public class WorldController : MonoBehaviour {
     }
 
     Category createGeneralMoneyPile(Vector3 position, Quaternion rotation) {
-        generalMoneyPile = new Category("Free Money", 2827.0f, categoriesParent, position, rotation);
+        generalMoneyPile = new Category("Free Money", 2800.0f, categoriesParent, position, rotation);
         generalMoneyPile.wc = this;
         return generalMoneyPile;
     }
@@ -255,9 +255,9 @@ public class WorldController : MonoBehaviour {
 			case "convert-dollars":
                 mostRecentSavingsPile.convertVisualizationUnit("Dollar");
                 break;
-			case "shop-helicopter":
-				Debug.Log ("Shop heli");
-				storeScript.buy ("helicopter");
+			case "shop-jet":
+				Debug.Log ("Shop jet");
+				storeScript.buy ("jet");
 				break;
 			case "shop-car":
 				Debug.Log ("Shop car");
