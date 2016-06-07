@@ -15,21 +15,22 @@ namespace AssemblyCSharp
 	public class Category : MonoBehaviour
 	{
 		#region String Parameter vars
+		public string categoryName;
 		public WorldController wc;
-		protected String categoryName;
 		protected String prefabFolder = "Prefabs/";
-		protected String defaultUnit = "GoldBar";
-		protected String currentUnit = "GoldBar";
+		protected String defaultUnit = "Dollar";
+		protected String currentUnit = "Dollar";
 		protected Dictionary<String, float> unitMap = new Dictionary<String, float>()
 		{
 			{ "GoldBar", 1.0f },
+			{ "Dollar", 1.0f },
 			{ "PS4", 400.0f },
 			{ "Starbucks", 3.50f }
 		};
 		#endregion
 
 		#region Data stored vars
-		protected float moneyStored;
+		public float moneyStored;
 		protected float unconvertedUnits = 0.0f;
 		#endregion
 
@@ -64,13 +65,15 @@ namespace AssemblyCSharp
 			categoryParentObj.transform.SetParent (categoriesRootObj.transform);
 
 			moneyObjectParentObj = new GameObject ();
-			moneyObjectParentObj.transform.position = categoryParentObj.transform.position;
+			moneyObjectParentObj.transform.position = categoryParentObj.transform.position + new Vector3(0f, 10f, 0f);
 			moneyObjectParentObj.transform.rotation = categoryParentObj.transform.rotation;
 			moneyObjectParentObj.transform.SetParent (categoryParentObj.transform);
 			moneyObjectParentObj.name = "Money Parent";
 
 			GameObject barrierPrefab = Resources.Load (prefabFolder + "Barrier", typeof(GameObject)) as GameObject;
 			GameObject barrierInstance = Instantiate (barrierPrefab);
+			MoneyLeavingTracker moneyLeavingTrackerScript = barrierInstance.AddComponent<MoneyLeavingTracker> ();
+			moneyLeavingTrackerScript.categoryScript = this;
 			barrierInstance.transform.position = categoryParentObj.transform.position;
 			barrierInstance.transform.rotation = barrierInstance.transform.rotation;
 
@@ -117,7 +120,7 @@ namespace AssemblyCSharp
 			setTextForTextLabel (categoryNameTextLabel, categoryName);
 		}
 
-		protected virtual void updateAllTextLabels(){
+		public virtual void updateAllTextLabels(){
 			updateAmountLabel();
 			updateCategoryLabel ();
 		}
@@ -160,6 +163,7 @@ namespace AssemblyCSharp
 				int numberInPlaceValue = (int)amountToConvert % ( placeValue * 10 );
 
 				int digitValue = numberInPlaceValue / placeValue;
+
 				amountToConvert -= numberInPlaceValue;
 
 				//Convert to objects for this place value
@@ -171,6 +175,7 @@ namespace AssemblyCSharp
 			}
 			return placeValuesMap;
 		}
+			
 
 		// Returns a list of in-world game objects for a given number of objects, under the category parent object
 		protected List<GameObject> createPlaceValueObjects(int placeValue, float numberOfObjs, String unit){
@@ -182,6 +187,10 @@ namespace AssemblyCSharp
 				moneyObjPosition.y += i + 5;
 				GameObject moneyPrefabInstance = Instantiate (prefabForPlaceValue, moneyObjPosition, Quaternion.identity) as GameObject;
 				moneyPrefabInstance.transform.SetParent (moneyObjectParentObj.transform);
+
+				// Attach money script so that the money object knows how much value it holds
+				Money moneyScript = moneyPrefabInstance.AddComponent<Money>() as Money;
+				moneyScript.value = unitMap [unit] * placeValue;
 
 				placeValueObjectList.Add (moneyPrefabInstance);
 			}
@@ -217,7 +226,7 @@ namespace AssemblyCSharp
 
 			moneyStored += amount;
 			if (categoryName != "Points") {
-				wc.addPoints (1.0f);
+				wc.addPoints (100.0f);
 			}
 			updateAmountLabel ();
 		}
@@ -258,22 +267,6 @@ namespace AssemblyCSharp
 			}
 	
 		}
-
-        #endregion
-
-        #region Moving money in and out
-
-        void onTriggerExit(Collider other)
-        {
-            Debug.Log("On trigger exit");
-            if (other.gameObject.layer == LayerMask.NameToLayer("Money") || other.gameObject.layer == LayerMask.NameToLayer("GrabbedMoney") )
-            {
-                Debug.Log("Money leaving");
-                Money moneyScript = other.GetComponent<Money>();
-                moneyStored -= moneyScript.value;
-                updateAllTextLabels();
-            }
-        }
 
         #endregion
 

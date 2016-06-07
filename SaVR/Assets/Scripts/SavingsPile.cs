@@ -66,7 +66,7 @@ namespace AssemblyCSharp
 			setTextForTextLabel (goalTextLabel, "Goal: $" + goalAmount.ToString ());
 		}
 
-		protected override void updateAllTextLabels(){
+		public override void updateAllTextLabels(){
 			base.updateAllTextLabels ();
 			updateGoalLabel ();
 		}
