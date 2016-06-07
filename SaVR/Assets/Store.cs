@@ -22,7 +22,6 @@ public class Store : MonoBehaviour {
 		}
 	}
 
-	public GameObject pointsPile;
 	public Category pointsScript;
 	protected string prefabFolder = "Prefabs/";
 

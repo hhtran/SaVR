@@ -7,6 +7,7 @@ using AssemblyCSharp;
 public class WorldController : MonoBehaviour {
 
     public GameObject gameMenu;
+    public GameObject shopMenu;
     public GameObject convertMenu;
     public GameObject headMountedDisplay;
 
@@ -17,7 +18,7 @@ public class WorldController : MonoBehaviour {
     private Category mostRecentSavingsPile;
     private bool atLeastOneSavingsPileExists = false;
     private Category generalMoneyPile;
-    private Category pointsPile;
+    public Category pointsPile;
     public GameObject store;
 	private Store storeScript;
     public GameObject leftController;
@@ -48,15 +49,15 @@ public class WorldController : MonoBehaviour {
 
     Category createPointsPile(Vector3 position, Quaternion rotation) {
         pointsPile = new Category("Points", 0.0f, categoriesParent, position, rotation);
-
-        return generalMoneyPile;
+        pointsPile.wc = this;
+        return pointsPile;
     }
 
     public void addPoints(float numPoints) {
         pointsPile.addMoney(numPoints);
     }
 
-    void Start() {
+    public void Start() {
         createGeneralMoneyPile(new Vector3(0, 0, 0), Quaternion.identity);
         createPointsPile(new Vector3(7, 0, 0), Quaternion.identity);
         storeScript = store.GetComponent<Store>();
@@ -243,6 +244,7 @@ public class WorldController : MonoBehaviour {
                 goToNextMenu(convertMenu);
                 break;
             case "shop":
+                goToNextMenu(shopMenu);
                 break;
 			case "convert-ps4":
 				mostRecentSavingsPile.convertVisualizationUnit("PS4");
@@ -250,8 +252,9 @@ public class WorldController : MonoBehaviour {
 			case "convert-starbucks":
 				mostRecentSavingsPile.convertVisualizationUnit("Starbucks");
 				break;
-			case "convert-gold":
-				break;
+			case "convert-dollars":
+                mostRecentSavingsPile.convertVisualizationUnit("Dollar");
+                break;
 			case "shop-helicopter":
 				Debug.Log ("Shop heli");
 				storeScript.buy ("helicopter");
