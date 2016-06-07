@@ -30,7 +30,7 @@ public class WorldController : MonoBehaviour {
 
     SavingsPile createSavingsPile(Vector3 position, Quaternion rotation) {
         atLeastOneSavingsPileExists = true;
-        SavingsPile savingsPile = new SavingsPile("Savings Pile", 1000.0f, 100.0f, savingsPilesParent, position, rotation);
+        SavingsPile savingsPile = new SavingsPile("Savings Pile", 1000.0f, 0.0f, savingsPilesParent, position, rotation);
         numberOfSavingsPiles++;
         savingsPile.wc = this;
         return savingsPile;
