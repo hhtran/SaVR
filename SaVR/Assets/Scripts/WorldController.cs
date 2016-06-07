@@ -30,6 +30,8 @@ public class WorldController : MonoBehaviour {
 
     private int numberOfSavingsPiles = 0;
 
+    static bool loadGoodSaver = true;
+
     SavingsPile createSavingsPile(Vector3 position, Quaternion rotation) {
         atLeastOneSavingsPileExists = true;
         SavingsPile savingsPile = new SavingsPile("Savings Pile", 1000.0f, 0.0f, savingsPilesParent, position, rotation);
@@ -222,6 +224,16 @@ public class WorldController : MonoBehaviour {
                 break;
 			case "changeWorld":
 				Debug.Log ("Change world button pressed");
+                if (loadGoodSaver)
+                {
+                    loadGoodSaver = false;
+                    SceneManager.LoadScene(0);
+                }
+                else
+                {
+                    loadGoodSaver = true;
+                    SceneManager.LoadScene(1);
+                }
 				break;
             case "newSavings":
                 mostRecentSavingsPile = createSavingsPile(new Vector3((numberOfSavingsPiles + 1) * 15, 0, 0), Quaternion.identity);
