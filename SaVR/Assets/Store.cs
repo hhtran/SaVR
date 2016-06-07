@@ -48,7 +48,7 @@ public class Store : MonoBehaviour {
 		if (pointsScript.getMoneyStored () < itemBeingBought.price)
 			return;
 
-		Instantiate (Resources.Load (prefabFolder + itemBeingBought.prefabPath), new Vector3 (0f, 1f, 0f), Quaternion.identity);
+		Instantiate (Resources.Load (prefabFolder + itemBeingBought.prefabPath), new Vector3 (0f, 5f, -5f), Quaternion.identity);
 		pointsScript.removeMoney (itemBeingBought.price);
 	}
 	

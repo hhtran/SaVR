@@ -4,8 +4,6 @@ using System.Collections;
 
 namespace AssemblyCSharp
 {
-    [ExecuteInEditMode]
-
     public class KeypadKey : MonoBehaviour {
         public string keytext = "";
         public string keyvalue = "";
