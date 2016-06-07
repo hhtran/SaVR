@@ -15,8 +15,8 @@ namespace AssemblyCSharp
 	public class Category : MonoBehaviour
 	{
 		#region String Parameter vars
+		public string categoryName;
 		public WorldController wc;
-		protected String categoryName;
 		protected String prefabFolder = "Prefabs/";
 		protected String defaultUnit = "GoldBar";
 		protected String currentUnit = "GoldBar";
@@ -29,7 +29,7 @@ namespace AssemblyCSharp
 		#endregion
 
 		#region Data stored vars
-		protected float moneyStored;
+		public float moneyStored;
 		protected float unconvertedUnits = 0.0f;
 		#endregion
 
@@ -71,6 +71,8 @@ namespace AssemblyCSharp
 
 			GameObject barrierPrefab = Resources.Load (prefabFolder + "Barrier", typeof(GameObject)) as GameObject;
 			GameObject barrierInstance = Instantiate (barrierPrefab);
+			MoneyLeavingTracker moneyLeavingTrackerScript = barrierInstance.AddComponent<MoneyLeavingTracker> ();
+			moneyLeavingTrackerScript.categoryScript = this;
 			barrierInstance.transform.position = categoryParentObj.transform.position;
 			barrierInstance.transform.rotation = barrierInstance.transform.rotation;
 
@@ -117,7 +119,7 @@ namespace AssemblyCSharp
 			setTextForTextLabel (categoryNameTextLabel, categoryName);
 		}
 
-		protected virtual void updateAllTextLabels(){
+		public virtual void updateAllTextLabels(){
 			updateAmountLabel();
 			updateCategoryLabel ();
 		}
@@ -160,6 +162,7 @@ namespace AssemblyCSharp
 				int numberInPlaceValue = (int)amountToConvert % ( placeValue * 10 );
 
 				int digitValue = numberInPlaceValue / placeValue;
+
 				amountToConvert -= numberInPlaceValue;
 
 				//Convert to objects for this place value
@@ -182,6 +185,10 @@ namespace AssemblyCSharp
 				moneyObjPosition.y += i + 5;
 				GameObject moneyPrefabInstance = Instantiate (prefabForPlaceValue, moneyObjPosition, Quaternion.identity) as GameObject;
 				moneyPrefabInstance.transform.SetParent (moneyObjectParentObj.transform);
+
+				// Attach money script so that the money object knows how much value it holds
+				Money moneyScript = moneyPrefabInstance.AddComponent<Money>() as Money;
+				moneyScript.value = unitMap [unit] * placeValue;
 
 				placeValueObjectList.Add (moneyPrefabInstance);
 			}
@@ -258,22 +265,6 @@ namespace AssemblyCSharp
 			}
 	
 		}
-
-        #endregion
-
-        #region Moving money in and out
-
-        void onTriggerExit(Collider other)
-        {
-            Debug.Log("On trigger exit");
-            if (other.gameObject.layer == LayerMask.NameToLayer("Money") || other.gameObject.layer == LayerMask.NameToLayer("GrabbedMoney") )
-            {
-                Debug.Log("Money leaving");
-                Money moneyScript = other.GetComponent<Money>();
-                moneyStored -= moneyScript.value;
-                updateAllTextLabels();
-            }
-        }
 
         #endregion
 
