@@ -52,7 +52,7 @@ public class WorldController : MonoBehaviour {
         pointsPile.addMoney(numPoints);
     }
 
-    void Awake() {
+    void Start() {
         createGeneralMoneyPile(new Vector3(0, 0, 0), Quaternion.identity);
         createPointsPile(new Vector3(7, 0, 0), Quaternion.identity);
         storeScript = store.GetComponent<Store>();

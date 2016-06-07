@@ -18,11 +18,12 @@ namespace AssemblyCSharp
 		public string categoryName;
 		public WorldController wc;
 		protected String prefabFolder = "Prefabs/";
-		protected String defaultUnit = "GoldBar";
-		protected String currentUnit = "GoldBar";
+		protected String defaultUnit = "Dollar";
+		protected String currentUnit = "Dollar";
 		protected Dictionary<String, float> unitMap = new Dictionary<String, float>()
 		{
 			{ "GoldBar", 1.0f },
+			{ "Dollar", 1.0f },
 			{ "PS4", 400.0f },
 			{ "Starbucks", 3.50f }
 		};
@@ -64,7 +65,7 @@ namespace AssemblyCSharp
 			categoryParentObj.transform.SetParent (categoriesRootObj.transform);
 
 			moneyObjectParentObj = new GameObject ();
-			moneyObjectParentObj.transform.position = categoryParentObj.transform.position;
+			moneyObjectParentObj.transform.position = categoryParentObj.transform.position + new Vector3(0f, 10f, 0f);
 			moneyObjectParentObj.transform.rotation = categoryParentObj.transform.rotation;
 			moneyObjectParentObj.transform.SetParent (categoryParentObj.transform);
 			moneyObjectParentObj.name = "Money Parent";
@@ -174,6 +175,7 @@ namespace AssemblyCSharp
 			}
 			return placeValuesMap;
 		}
+			
 
 		// Returns a list of in-world game objects for a given number of objects, under the category parent object
 		protected List<GameObject> createPlaceValueObjects(int placeValue, float numberOfObjs, String unit){
